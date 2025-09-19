@@ -4,15 +4,16 @@ import * as icons from 'lucide-vue-next'
 import { computed } from 'vue'
 
 interface Props {
-    name: string;
-    class?: string;
-    size?: number | string;
-    color?: string;
-    strokeWidth?: number | string;
+  name: string;
+  class?: string;
+  size?: number | string;
+  color?: string;
+  strokeWidth?: number | string;
 }
 
 const props = withDefaults(defineProps<Props>(), {
   class: '',
+  color: undefined,
   size: 16,
   strokeWidth: 2
 })

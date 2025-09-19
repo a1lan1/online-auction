@@ -1,8 +1,8 @@
-import PrimeVue from 'primevue/config'
 import Aura from '@primeuix/themes/aura'
+import type { PiniaPluginContext } from 'pinia'
+import PrimeVue from 'primevue/config'
 import ToastService from 'primevue/toastservice'
 import type { App } from 'vue'
-import type { PiniaPluginContext } from 'pinia'
 
 export function piniaToastPlugin({ store, app }: PiniaPluginContext) {
   store.$toast = app.config.globalProperties.$toast

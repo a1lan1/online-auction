@@ -11,8 +11,8 @@ import { Check, Copy, Loader2, ScanLine } from 'lucide-vue-next'
 import { computed, nextTick, ref, watch } from 'vue'
 
 interface Props {
-    requiresConfirmation: boolean;
-    twoFactorEnabled: boolean;
+  requiresConfirmation: boolean;
+  twoFactorEnabled: boolean;
 }
 
 const props = defineProps<Props>()
@@ -137,10 +137,12 @@ watch(
                 v-else
                 class="relative z-10 overflow-hidden border p-5"
               >
+                <!-- eslint-disable vue/no-v-html -->
                 <div
                   class="flex aspect-square size-full items-center justify-center"
                   v-html="qrCodeSvg"
                 />
+                <!-- eslint-enable vue/no-v-html -->
               </div>
             </div>
           </div>

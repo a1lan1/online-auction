@@ -1,12 +1,13 @@
 <script setup lang="ts">
-import AppContent from '@/components/AppContent.vue'
-import AppShell from '@/components/AppShell.vue'
-import AppSidebar from '@/components/AppSidebar.vue'
-import AppSidebarHeader from '@/components/AppSidebarHeader.vue'
+import AppContent from '@/components/layout/AppContent.vue'
+import AppShell from '@/components/layout/AppShell.vue'
+import AppSidebar from '@/components/layout/AppSidebar.vue'
+import AppSidebarHeader from '@/components/layout/AppSidebarHeader.vue'
 import type { BreadcrumbItemType } from '@/types'
+import Toast from 'primevue/toast'
 
 interface Props {
-    breadcrumbs?: BreadcrumbItemType[];
+  breadcrumbs?: BreadcrumbItemType[];
 }
 
 withDefaults(defineProps<Props>(), {
@@ -16,6 +17,7 @@ withDefaults(defineProps<Props>(), {
 
 <template>
   <AppShell variant="sidebar">
+    <Toast />
     <AppSidebar />
     <AppContent
       variant="sidebar"

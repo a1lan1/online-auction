@@ -13,8 +13,8 @@ import { Form, Head } from '@inertiajs/vue3'
 import { LoaderCircle } from 'lucide-vue-next'
 
 defineProps<{
-    status?: string;
-    canResetPassword: boolean;
+  status?: string;
+  canResetPassword: boolean;
 }>()
 </script>
 

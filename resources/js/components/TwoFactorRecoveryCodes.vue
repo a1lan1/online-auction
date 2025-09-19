@@ -37,9 +37,7 @@ onMounted(async() => {
       <CardTitle class="flex gap-3">
         <LockKeyhole class="size-4" />2FA Recovery Codes
       </CardTitle>
-      <CardDescription>
-        Recovery codes let you regain access if you lose your 2FA device. Store them in a secure password manager.
-      </CardDescription>
+      <CardDescription> Recovery codes let you regain access if you lose your 2FA device. Store them in a secure password manager. </CardDescription>
     </CardHeader>
     <CardContent>
       <div class="flex flex-col gap-3 select-none sm:flex-row sm:items-center sm:justify-between">

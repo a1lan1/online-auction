@@ -3,12 +3,12 @@ import { Breadcrumb, BreadcrumbItem, BreadcrumbLink, BreadcrumbList, BreadcrumbP
 import { Link } from '@inertiajs/vue3'
 
 interface BreadcrumbItemType {
-    title: string;
-    href?: string;
+  title: string;
+  href?: string;
 }
 
 defineProps<{
-    breadcrumbs: BreadcrumbItemType[];
+  breadcrumbs: BreadcrumbItemType[];
 }>()
 </script>
 

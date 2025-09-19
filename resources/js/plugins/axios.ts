@@ -1,6 +1,6 @@
-import { type App } from 'vue'
 import axios, { type AxiosInstance } from 'axios'
 import { type PiniaPluginContext } from 'pinia'
+import { type App } from 'vue'
 
 export function piniaAxiosPlugin({ store, app }: PiniaPluginContext) {
   store.$axios = app.config.globalProperties.$axios

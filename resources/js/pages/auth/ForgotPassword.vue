@@ -11,7 +11,7 @@ import { Form, Head } from '@inertiajs/vue3'
 import { LoaderCircle } from 'lucide-vue-next'
 
 defineProps<{
-    status?: string;
+  status?: string;
 }>()
 </script>
 

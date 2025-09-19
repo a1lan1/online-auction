@@ -10,8 +10,8 @@ import { LoaderCircle } from 'lucide-vue-next'
 import { ref } from 'vue'
 
 const props = defineProps<{
-    token: string;
-    email: string;
+  token: string;
+  email: string;
 }>()
 
 const inputEmail = ref(props.email)

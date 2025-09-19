@@ -9,9 +9,9 @@ import { Form, Head } from '@inertiajs/vue3'
 import { computed, ref } from 'vue'
 
 interface AuthConfigContent {
-    title: string;
-    description: string;
-    toggleText: string;
+  title: string;
+  description: string;
+  toggleText: string;
 }
 
 const authConfigContent = computed<AuthConfigContent>(() => {

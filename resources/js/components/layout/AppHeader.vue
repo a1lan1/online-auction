@@ -1,7 +1,7 @@
 <script setup lang="ts">
-import AppLogo from '@/components/AppLogo.vue'
-import AppLogoIcon from '@/components/AppLogoIcon.vue'
 import Breadcrumbs from '@/components/Breadcrumbs.vue'
+import AppLogo from '@/components/layout/AppLogo.vue'
+import AppLogoIcon from '@/components/layout/AppLogoIcon.vue'
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
 import { Button } from '@/components/ui/button'
 import { DropdownMenu, DropdownMenuContent, DropdownMenuTrigger } from '@/components/ui/dropdown-menu'
@@ -12,13 +12,14 @@ import UserMenuContent from '@/components/UserMenuContent.vue'
 import { getInitials } from '@/composables/useInitials'
 import { toUrl, urlIsActive } from '@/lib/utils'
 import { dashboard } from '@/routes'
+import auctionRoutes from '@/routes/auctions'
 import type { BreadcrumbItem, NavItem } from '@/types'
 import { InertiaLinkProps, Link, usePage } from '@inertiajs/vue3'
 import { BookOpen, Folder, LayoutGrid, Menu, Search } from 'lucide-vue-next'
 import { computed } from 'vue'
 
 interface Props {
-    breadcrumbs?: BreadcrumbItem[];
+  breadcrumbs?: BreadcrumbItem[];
 }
 
 const props = withDefaults(defineProps<Props>(), {
@@ -81,7 +82,7 @@ const rightNavItems: NavItem[] = [
                 Navigation Menu
               </SheetTitle>
               <SheetHeader class="flex justify-start text-left">
-                <AppLogoIcon class="size-6 fill-current text-black dark:text-white" />
+                <AppLogoIcon />
               </SheetHeader>
               <div class="flex h-full flex-1 flex-col justify-between space-y-4 py-6">
                 <nav class="-mx-3 space-y-1">
@@ -123,7 +124,7 @@ const rightNavItems: NavItem[] = [
         </div>
 
         <Link
-          :href="dashboard()"
+          :href="auctionRoutes.index()"
           class="flex items-center gap-x-2"
         >
           <AppLogo />
