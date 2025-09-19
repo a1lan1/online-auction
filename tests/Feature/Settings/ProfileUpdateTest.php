@@ -63,7 +63,7 @@ test('user can delete their account', function () {
 
     $response
         ->assertSessionHasNoErrors()
-        ->assertRedirect(route('home'));
+        ->assertRedirect(route('auctions.index'));
 
     $this->assertGuest();
     expect($user->fresh())->toBeNull();
