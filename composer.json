@@ -17,6 +17,7 @@
         "laravel/telescope": "^5.11",
         "laravel/tinker": "^2.10.1",
         "laravel/wayfinder": "^0.1.9",
+        "opcodesio/log-viewer": "^3.19",
         "predis/predis": "^3.2",
         "pusher/pusher-php-server": "^7.2",
         "spatie/laravel-data": "^4.17",
