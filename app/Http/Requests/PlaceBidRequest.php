@@ -14,7 +14,7 @@ class PlaceBidRequest extends FormRequest
     {
         return [
             'lot_id' => ['required', 'exists:lots,id'],
-            'amount' => ['required', 'numeric', 'gt:0', 'min:'.$this->lot->current_price + 0.01],
+            'amount' => ['required', 'numeric', 'gt:0'],
         ];
     }
 }
