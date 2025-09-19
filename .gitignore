@@ -33,3 +33,5 @@ _ide_helper_models.php
 /storage/rector
 rr
 .rr.yaml
+/coverage
+coverage.xml
