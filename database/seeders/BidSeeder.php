@@ -23,6 +23,7 @@ class BidSeeder extends Seeder
 
         if ($lots->isEmpty() || $users->isEmpty()) {
             $this->command->info('Cannot seed bids. Please make sure you have lots and users in the database.');
+
             return;
         }
 
