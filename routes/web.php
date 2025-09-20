@@ -18,7 +18,7 @@ Route::controller(LotController::class)
     ->group(function (): void {
         Route::get('{lot}', 'show')->name('show');
         Route::post('bid', 'placeBid')
-            ->middleware(['auth', 'verified'])
+            ->middleware(['auth', 'verified', 'throttle:12,1'])
             ->name('bids.store');
     });
 
