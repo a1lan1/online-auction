@@ -2,6 +2,8 @@
 import Breadcrumbs from '@/components/Breadcrumbs.vue'
 import { SidebarTrigger } from '@/components/ui/sidebar'
 import { login, register, telescope } from '@/routes'
+import { index as logViewer } from '@/routes/log-viewer'
+import { index as horizon } from '@/routes/horizon'
 import type { BreadcrumbItemType } from '@/types'
 import { Link } from '@inertiajs/vue3'
 import Button from 'primevue/button'
@@ -30,29 +32,41 @@ function openInNewTab(url: string) {
         :breadcrumbs="breadcrumbs"
       />
 
-      <Button
-        v-if="$page.props.auth.user"
-        size="small"
-        color="secondary"
-        label="Telescope"
-        @click="openInNewTab(telescope().url)"
-      />
-      <div
-        v-else
-        class="gap-2"
-      >
-        <Link
-          :href="login()"
-          class="inline-block rounded-sm border border-transparent px-5 py-1.5 text-sm leading-normal text-[#1b1b18] hover:border-[#19140035] dark:text-[#EDEDEC] dark:hover:border-[#3E3E3A]"
-        >
-          Log in
-        </Link>
-        <Link
-          :href="register()"
-          class="inline-block rounded-sm border border-[#19140035] px-5 py-1.5 text-sm leading-normal text-[#1b1b18] hover:border-[#1915014a] dark:border-[#3E3E3A] dark:text-[#EDEDEC] dark:hover:border-[#62605b]"
-        >
-          Register
-        </Link>
+      <div class="flex gap-2">
+        <template v-if="$page.props.auth.user">
+          <Button
+            size="small"
+            severity="secondary"
+            label="Telescope"
+            @click="openInNewTab(telescope().url)"
+          />
+          <Button
+            size="small"
+            severity="secondary"
+            label="Log"
+            @click="openInNewTab(logViewer().url)"
+          />
+          <Button
+            size="small"
+            severity="secondary"
+            label="Horizon"
+            @click="openInNewTab(horizon().url)"
+          />
+        </template>
+        <template v-else>
+          <Link
+            :href="login()"
+            class="inline-block rounded-sm border border-transparent px-5 py-1.5 text-sm leading-normal text-[#1b1b18] hover:border-[#19140035] dark:text-[#EDEDEC] dark:hover:border-[#3E3E3A]"
+          >
+            Log in
+          </Link>
+          <Link
+            :href="register()"
+            class="inline-block rounded-sm border border-[#19140035] px-5 py-1.5 text-sm leading-normal text-[#1b1b18] hover:border-[#1915014a] dark:border-[#3E3E3A] dark:text-[#EDEDEC] dark:hover:border-[#62605b]"
+          >
+            Register
+          </Link>
+        </template>
       </div>
     </nav>
   </header>
