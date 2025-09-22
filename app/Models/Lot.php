@@ -3,6 +3,8 @@
 namespace App\Models;
 
 use App\Enums\LotStatus;
+use App\Observers\LotObserver;
+use Illuminate\Database\Eloquent\Attributes\ObservedBy;
 use Illuminate\Database\Eloquent\Attributes\Scope;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -53,6 +55,7 @@ use Illuminate\Support\Carbon;
  *
  * @mixin \Eloquent
  */
+#[ObservedBy([LotObserver::class])]
 class Lot extends Model
 {
     /** @use HasFactory<\Database\Factories\LotFactory> */

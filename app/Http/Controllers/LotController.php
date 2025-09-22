@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Actions\PlaceBidAction;
+use App\Contracts\LotServiceInterface;
 use App\DTOs\BidData;
 use App\Http\Requests\PlaceBidRequest;
 use App\Models\Bid;
@@ -14,6 +15,8 @@ use Inertia\Response;
 
 class LotController extends Controller
 {
+    public function __construct(private readonly LotServiceInterface $lotService) {}
+
     /**
      * @throws AuthorizationException
      */
@@ -21,20 +24,16 @@ class LotController extends Controller
     {
         $this->authorize('view', $lot);
 
-        $lot->load(['bids.user', 'auction']);
-
         return Inertia::render('auction/ShowLot', [
-            'lot' => $lot,
+            'lot' => $this->lotService->getLot($lot),
         ]);
     }
 
     /**
      * @throws AuthorizationException
      */
-    public function placeBid(PlaceBidRequest $request, PlaceBidAction $action): RedirectResponse
+    public function placeBid(PlaceBidRequest $request, Lot $lot, PlaceBidAction $action): RedirectResponse
     {
-        $lot = Lot::findOrFail($request->validated('lot_id'));
-
         $this->authorize('create', [Bid::class, $lot]);
 
         try {
@@ -49,6 +48,6 @@ class LotController extends Controller
             return back()->withErrors(['amount' => $e->getMessage()]);
         }
 
-        return back()->with('success', 'Your bid was placed successfully!');
+        return back()->with('message', 'Your bid was placed successfully!');
     }
 }

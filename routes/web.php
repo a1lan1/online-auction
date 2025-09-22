@@ -13,10 +13,10 @@ Route::controller(AuctionController::class)
     });
 
 Route::controller(LotController::class)
-    ->prefix('lots')
+    ->prefix('lots/{lot}')
     ->name('lots.')
     ->group(function (): void {
-        Route::get('{lot}', 'show')->name('show');
+        Route::get('', 'show')->name('show');
         Route::post('bid', 'placeBid')
             ->middleware(['auth', 'verified', 'throttle:12,1'])
             ->name('bids.store');

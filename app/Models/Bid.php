@@ -2,6 +2,8 @@
 
 namespace App\Models;
 
+use App\Observers\BidObserver;
+use Illuminate\Database\Eloquent\Attributes\ObservedBy;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -10,7 +12,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
  * @property int $id
  * @property int $lot_id
  * @property int $user_id
- * @property float $amount
+ * @property numeric $amount
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
  * @property-read \App\Models\Lot $lot
@@ -29,6 +31,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
  *
  * @mixin \Eloquent
  */
+#[ObservedBy([BidObserver::class])]
 class Bid extends Model
 {
     /** @use HasFactory<\Database\Factories\BidFactory> */
@@ -46,7 +49,7 @@ class Bid extends Model
     protected function casts(): array
     {
         return [
-            'amount' => 'float',
+            'amount' => 'decimal:2',
         ];
     }
 
