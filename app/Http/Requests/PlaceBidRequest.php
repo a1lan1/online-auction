@@ -13,8 +13,27 @@ class PlaceBidRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'lot_id' => ['required', 'exists:lots,id'],
-            'amount' => ['required', 'numeric', 'gt:0'],
+            'amount' => [
+                'required',
+                'numeric',
+                'decimal:0,2',
+                'gt:'.$this->lot->current_price,
+            ],
         ];
+    }
+
+    protected function prepareForValidation(): void
+    {
+        if ($this->has('amount')) {
+            $sanitizedAmount = filter_var(
+                str_replace(',', '.', (string) $this->input('amount')),
+                FILTER_SANITIZE_NUMBER_FLOAT,
+                FILTER_FLAG_ALLOW_FRACTION
+            );
+
+            $truncatedAmount = floor((float) $sanitizedAmount * 100) / 100;
+
+            $this->merge(['amount' => $truncatedAmount]);
+        }
     }
 }
