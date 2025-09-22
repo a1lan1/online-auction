@@ -2,6 +2,7 @@
 
 namespace App\Policies;
 
+use App\Enums\LotStatus;
 use App\Models\Bid;
 use App\Models\Lot;
 use App\Models\User;
@@ -25,6 +26,7 @@ class BidPolicy
     public function create(User $user, Lot $lot): bool
     {
         return $user->id !== $lot->auction->user_id
+            && $lot->status === LotStatus::ACTIVE
             && now()->between($lot->starts_at, $lot->ends_at);
     }
 

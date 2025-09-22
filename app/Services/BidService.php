@@ -48,6 +48,6 @@ class BidService implements BidServiceInterface
             $lot->update(['current_price' => $data->amount]);
 
             return $bid;
-        });
+        }, 5); // Retry up to 5 times in case of deadlock
     }
 }

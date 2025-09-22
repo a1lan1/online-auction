@@ -27,4 +27,11 @@ class LotFactory extends Factory
             'status' => fake()->randomElement(LotStatus::values()),
         ];
     }
+
+    public function active(): static
+    {
+        return $this->state(fn (array $attributes): array => [
+            'status' => LotStatus::ACTIVE,
+        ]);
+    }
 }

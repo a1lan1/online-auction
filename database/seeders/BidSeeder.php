@@ -28,23 +28,33 @@ class BidSeeder extends Seeder
         }
 
         $lots->each(function (Lot $lot) use ($users) {
-            $bidsCount = random_int(1, 5);
+            $bidsCount = random_int(1, 10);
             $lastAmount = $lot->starting_price;
 
-            // Ensure we have enough unique users for the bids we want to create
-            $biddingUsers = $users->count() >= $bidsCount
-                ? $users->random($bidsCount)->unique()
-                : $users->random($users->count())->unique();
+            // Determine the number of bidders, ensuring it doesn't exceed the available user count.
+            $numberOfBidders = min($bidsCount, $users->count());
+            $biddingUsers = $users->random($numberOfBidders);
 
-            foreach ($biddingUsers as $user) {
+            // Use iteration with an index to create chronological timestamps.
+            // The values() method resets collection keys to a zero-based index (0, 1, 2...).
+            $biddingUsers->values()->each(function (User $user, int $index) use ($lot, &$lastAmount, $numberOfBidders) {
                 $lastAmount += random_int(10, 100);
 
-                Bid::factory()->create([
+                // Create bids in chronological order, with the last bid being the most recent.
+                // Assume a 5-minute interval between bids.
+                $minutesAgo = ($numberOfBidders - $index) * 5;
+                $createdAt = now()->subMinutes($minutesAgo);
+
+                $bid = Bid::factory()->make([
                     'lot_id' => $lot->id,
                     'user_id' => $user->id,
                     'amount' => $lastAmount,
                 ]);
-            }
+
+                $bid->created_at = $createdAt;
+                $bid->updated_at = $createdAt;
+                $bid->save();
+            });
 
             // Update the lot's current price to the last bid amount
             if ($biddingUsers->isNotEmpty()) {

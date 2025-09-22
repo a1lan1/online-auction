@@ -12,12 +12,16 @@ class PlaceBidRequest extends FormRequest
      */
     public function rules(): array
     {
+        $minPrice = $this->lot->current_price > 0
+            ? $this->lot->current_price
+            : $this->lot->starting_price;
+
         return [
             'amount' => [
                 'required',
                 'numeric',
                 'decimal:0,2',
-                'gt:'.$this->lot->current_price,
+                'gt:'.$minPrice,
             ],
         ];
     }
