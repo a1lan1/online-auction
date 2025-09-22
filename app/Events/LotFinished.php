@@ -2,7 +2,6 @@
 
 namespace App\Events;
 
-use App\Contracts\LotServiceInterface;
 use App\Models\Lot;
 use Illuminate\Broadcasting\Channel;
 use Illuminate\Broadcasting\InteractsWithSockets;
@@ -14,7 +13,15 @@ class LotFinished implements ShouldBroadcast
 {
     use Dispatchable, InteractsWithSockets, SerializesModels;
 
-    public function __construct(public readonly Lot $lot) {}
+    public function __construct(public readonly Lot $lot)
+    {
+        $this->lot->loadMissing([
+            'auction',
+            'winnerBid',
+            'winner:id,name',
+            'bids.user:id,name',
+        ]);
+    }
 
     public function broadcastOn(): array
     {
@@ -30,10 +37,10 @@ class LotFinished implements ShouldBroadcast
         return 'lot.finished';
     }
 
-    public function broadcastWith(LotServiceInterface $lotService): array
+    public function broadcastWith(): array
     {
         return [
-            'lot' => $lotService->getLot($this->lot),
+            'lot' => $this->lot,
         ];
     }
 }
