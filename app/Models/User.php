@@ -21,6 +21,10 @@ use Laravel\Fortify\TwoFactorAuthenticatable;
  * @property string|null $two_factor_secret
  * @property string|null $two_factor_recovery_codes
  * @property string|null $two_factor_confirmed_at
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Auction> $auctions
+ * @property-read int|null $auctions_count
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Bid> $bids
+ * @property-read int|null $bids_count
  * @property-read \Illuminate\Notifications\DatabaseNotificationCollection<int, \Illuminate\Notifications\DatabaseNotification> $notifications
  * @property-read int|null $notifications_count
  *
@@ -39,11 +43,6 @@ use Laravel\Fortify\TwoFactorAuthenticatable;
  * @method static \Illuminate\Database\Eloquent\Builder<static>|User whereTwoFactorRecoveryCodes($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|User whereTwoFactorSecret($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|User whereUpdatedAt($value)
- *
- * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Auction> $auctions
- * @property-read int|null $auctions_count
- * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Bid> $bids
- * @property-read int|null $bids_count
  *
  * @mixin \Eloquent
  */

@@ -10,25 +10,22 @@ export function usePlaceBid(lot: Ref<Lot>, buttonRef: Ref<ComponentPublicInstanc
   const toast = useToast()
 
   const form = useForm({
-    lot_id: lot.value.id,
     amount: lot.value.current_price + 1
   })
 
   const isDisabled = computed(() => form.processing || form.amount <= lot.value.current_price)
 
   watch(lot, (newLot) => {
-    form.lot_id = newLot.id
-
-    if (newLot.current_price >= form.amount) {
-      form.amount = newLot.current_price + 1
+    if (newLot) {
+      form.amount = Number(newLot.current_price) + 5
     }
-  }, { deep: true })
+  }, { deep: true, immediate: true })
 
   const submitBid = () => {
     if (!form.amount || !lot.value) {
       return toast.add({
         severity: 'error',
-        summary: 'Error lot',
+        summary: 'Error placing bid',
         detail: 'Lot information is missing.',
         life: 3000
       })
@@ -36,11 +33,18 @@ export function usePlaceBid(lot: Ref<Lot>, buttonRef: Ref<ComponentPublicInstanc
 
     form.processing = true
 
-    form.post(lots.bids.store().url, {
+    form.post(lots.bids.store(lot.value.id).url, {
       preserveScroll: true,
       preserveState: true,
       onSuccess: () => {
         form.reset('amount')
+
+        toast.add({
+          severity: 'success',
+          summary: 'Success',
+          detail: 'Bid placed successfully!',
+          life: 3000
+        })
 
         const rect = buttonRef.value?.$el?.getBoundingClientRect()
 
@@ -56,7 +60,12 @@ export function usePlaceBid(lot: Ref<Lot>, buttonRef: Ref<ComponentPublicInstanc
           })
         }
       },
-      onError: (errors) => console.error('Er', errors),
+      onError: (errors) => toast.add({
+        severity: 'error',
+        summary: 'Error placing bid',
+        detail: errors.amount || 'An error occurred while placing the bid.',
+        life: 3000
+      }),
       onFinish: () => (form.processing = false)
     })
   }

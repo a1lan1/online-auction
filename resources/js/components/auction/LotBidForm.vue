@@ -13,7 +13,7 @@ const props = defineProps<{
 
 const buttonRef = ref<ComponentPublicInstance>()
 
-const { isFinished } = useCountdown(props.lot.auction!.ends_at)
+const { isFinished } = useCountdown(props.lot.ends_at)
 const { form, isDisabled, submitBid } = usePlaceBid(toRef(props, 'lot'), buttonRef)
 </script>
 
@@ -48,12 +48,6 @@ const { form, isDisabled, submitBid } = usePlaceBid(toRef(props, 'lot'), buttonR
           :loading="form.processing"
           :disabled="isDisabled"
         />
-      </div>
-      <div
-        v-if="form.errors.amount"
-        class="mt-2 text-sm text-destructive"
-      >
-        {{ form.errors.amount }}
       </div>
     </form>
   </div>

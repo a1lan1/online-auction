@@ -30,7 +30,7 @@ export const useAuctionStore = defineStore('auction', {
       try {
         this.loading = true
         const { data } = await this.$axios.get(`/api/lots/${lotId}`)
-        this.currentLot = data
+        this.setLot(data)
       } catch (e: any) {
         this.$toast.add({
           severity: 'error',

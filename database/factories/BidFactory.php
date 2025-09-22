@@ -20,7 +20,7 @@ class BidFactory extends Factory
         return [
             'lot_id' => Lot::factory(),
             'user_id' => User::factory(),
-            'amount' => $this->faker->randomFloat(2, 10, 5000),
+            'amount' => fake()->randomFloat(2, 10, 5000),
         ];
     }
 }
