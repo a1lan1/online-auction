@@ -93,4 +93,15 @@ export interface AuctionState {
   currentLot: Lot | null;
 }
 
+// Timer Config
+export type TimeUnitKey = 'days' | 'hours' | 'minutes' | 'seconds';
+
+export type PrevTimeUnitKey = 'prevDays' | 'prevHours' | 'prevMinutes' | 'prevSeconds';
+
+export interface TimeConfigItem {
+  unit: TimeUnitKey;
+  limits: [number, number];
+  prevUnit: PrevTimeUnitKey;
+}
+
 export type BreadcrumbItemType = BreadcrumbItem;

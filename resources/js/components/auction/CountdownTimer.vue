@@ -1,82 +1,70 @@
 <script setup lang="ts">
-import FlipCard from '@/components/auction/FlipCard.vue'
 import { useCountdown } from '@/composables/useCountdown'
-import type { Auction } from '@/types'
-import { computed } from 'vue'
+import { TimeConfigItem } from '@/types'
+import TimeUnit from '@/components/auction/TimeUnit.vue'
 
-const props = defineProps<{
-  auction?: Auction;
-}>()
+interface Props {
+  date: string;
+  type: 'up' | 'down';
+}
 
-const { days, hours, minutes, seconds, isFinished } = useCountdown(props.auction!.ends_at)
+const props = withDefaults(defineProps<Props>(), {
+  date: undefined,
+  type: 'down'
+})
 
-const format = (value: number) => String(value).padStart(2, '0')
+const { timer, targetDate } = useCountdown(props.date, props.type)
 
-const daysFormatted = computed(() => format(days.value))
-const hoursFormatted = computed(() => format(hours.value))
-const minutesFormatted = computed(() => format(minutes.value))
-const secondsFormatted = computed(() => format(seconds.value))
+const timeConfig: TimeConfigItem[] = [
+  { unit: 'days', limits: [10, 10], prevUnit: 'prevDays' },
+  { unit: 'hours', limits: [3, 10], prevUnit: 'prevHours' },
+  { unit: 'minutes', limits: [6, 10], prevUnit: 'prevMinutes' },
+  { unit: 'seconds', limits: [6, 10], prevUnit: 'prevSeconds' }
+]
 </script>
 
 <template>
-  <div
-    v-if="auction"
-    class="rounded-xl border bg-card p-6 text-card-foreground shadow-sm"
-  >
-    <h2 class="text-center text-lg font-medium text-muted-foreground">
-      {{ isFinished ? 'Auction Ended' : 'Auction Ends In' }}
-    </h2>
+  <div class="flipTimer-wrapper">
     <div
-      v-if="!isFinished"
-      class="mt-3 flex items-start justify-center space-x-2 md:space-x-4"
+      class="flipTimer"
+      :data-flip-date="targetDate.toISOString()"
+      :data-flip-type="type"
     >
-      <!-- Days -->
-      <div class="flex flex-col items-center space-y-2">
-        <div class="flex gap-2">
-          <FlipCard :digit="Number(daysFormatted[0])" />
-          <FlipCard :digit="Number(daysFormatted[1])" />
-        </div>
-        <span class="text-xs font-medium text-muted-foreground">DAYS</span>
-      </div>
-
-      <span class="text-3xl font-light text-muted-foreground">:</span>
-
-      <!-- Hours -->
-      <div class="flex flex-col items-center space-y-2">
-        <div class="flex gap-2">
-          <FlipCard :digit="Number(hoursFormatted[0])" />
-          <FlipCard :digit="Number(hoursFormatted[1])" />
-        </div>
-        <span class="text-xs font-medium text-muted-foreground">HOURS</span>
-      </div>
-
-      <span class="text-3xl font-light text-muted-foreground">:</span>
-
-      <!-- Minutes -->
-      <div class="flex flex-col items-center space-y-2">
-        <div class="flex gap-2">
-          <FlipCard :digit="Number(minutesFormatted[0])" />
-          <FlipCard :digit="Number(minutesFormatted[1])" />
-        </div>
-        <span class="text-xs font-medium text-muted-foreground">MINUTES</span>
-      </div>
-
-      <span class="text-3xl font-light text-muted-foreground">:</span>
-
-      <!-- Seconds -->
-      <div class="flex flex-col items-center space-y-2">
-        <div class="flex gap-2">
-          <FlipCard :digit="Number(secondsFormatted[0])" />
-          <FlipCard :digit="Number(secondsFormatted[1])" />
-        </div>
-        <span class="text-xs font-medium text-muted-foreground">SECONDS</span>
-      </div>
-    </div>
-    <div
-      v-else
-      class="mt-3 text-center text-2xl font-bold text-destructive"
-    >
-      This auction is no longer active.
+      <template
+        v-for="(config, index) in timeConfig"
+        :key="config.unit"
+      >
+        <TimeUnit
+          :label="config.unit"
+          :digits="timer[config.unit]"
+          :previous-digits="timer[config.prevUnit]"
+          :digit-limits="config.limits"
+          :show-separator="index < timeConfig.length - 1"
+        />
+      </template>
     </div>
   </div>
 </template>
+
+<style scoped>
+.flipTimer-wrapper {
+  padding: 40px;
+  background-color: #ffffffab;
+  border-radius: 20px;
+  box-shadow: 0 0.125rem 0.35rem rgba(226, 227, 228, 0.65);
+  backdrop-filter: blur(2px);
+  -webkit-backdrop-filter: blur(2px);
+}
+
+.flipTimer {
+  color: #111111;
+  font-family: "Helvetica Neue", Helvetica, sans-serif;
+  font-size: 90px;
+  font-weight: bold;
+  line-height: 100px;
+  height: 100px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+</style>
