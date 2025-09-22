@@ -17,43 +17,18 @@ class LotPolicy
         return true;
     }
 
-    /**
-     * Any authenticated user can create a lot.
-     */
     public function create(User $user): bool
     {
         return true;
     }
 
-    /**
-     * Only the lot owner can update it.
-     */
     public function update(User $user, Lot $lot): bool
     {
-        return $user->id === $lot->user_id;
+        return $user->id === $lot->auction->user_id;
     }
 
-    /**
-     * Only the lot owner can delete it.
-     */
     public function delete(User $user, Lot $lot): bool
     {
-        return $user->id === $lot->user_id;
-    }
-
-    /**
-     * Only the lot owner can restore it.
-     */
-    public function restore(User $user, Lot $lot): bool
-    {
-        return $user->id === $lot->user_id;
-    }
-
-    /**
-     * Only the lot owner can permanently delete it.
-     */
-    public function forceDelete(User $user, Lot $lot): bool
-    {
-        return $user->id === $lot->user_id;
+        return $user->id === $lot->auction->user_id;
     }
 }

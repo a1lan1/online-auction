@@ -20,10 +20,12 @@ class BidPolicy
 
     /**
      * A user cannot bid on their own lot.
+     * A user can only bid if the lot is active.
      */
     public function create(User $user, Lot $lot): bool
     {
-        return $user->id !== $lot->user_id;
+        return $user->id !== $lot->auction->user_id
+            && now()->between($lot->starts_at, $lot->ends_at);
     }
 
     /**

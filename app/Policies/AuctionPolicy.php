@@ -22,14 +22,14 @@ class AuctionPolicy
      */
     public function update(User $user, Auction $auction): bool
     {
-        return $user->id === $auction->lot->user_id;
+        return $user->id === $auction->user_id;
     }
 
     /**
-     * The owner can delete the auction only if no bids have been placed.
+     * The owner can delete the auction.
      */
     public function delete(User $user, Auction $auction): bool
     {
-        return $user->id === $auction->lot->user_id && ! $auction->bids()->exists();
+        return $user->id === $auction->user_id;
     }
 }
