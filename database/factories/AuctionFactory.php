@@ -18,9 +18,7 @@ class AuctionFactory extends Factory
     {
         return [
             'user_id' => User::factory(),
-            'name' => $this->faker->word.' Auction',
-            'starts_at' => now(),
-            'ends_at' => now()->addDays(7),
+            'name' => fake()->word.' Auction',
         ];
     }
 }

@@ -18,10 +18,11 @@ class LotFactory extends Factory
     {
         return [
             'auction_id' => Auction::factory(),
-            'title' => $this->faker->sentence,
-            'description' => $this->faker->paragraph,
-            'starting_price' => $this->faker->randomFloat(2, 100, 1000),
-            'current_price' => 0,
+            'title' => fake()->sentence,
+            'description' => fake()->paragraph,
+            'starts_at' => now()->subDays(5),
+            'ends_at' => fake()->dateTimeBetween('-2 days', '+5 days'),
+            'starting_price' => fake()->randomFloat(2, 100, 1000),
         ];
     }
 }

@@ -23,7 +23,7 @@ class BidService implements BidServiceInterface
             $lot = Lot::lockForUpdate()->findOrFail($data->lot_id);
 
             // 1. Validate auction status
-            if ($lot->auction->ends_at->isPast()) {
+            if ($lot->ends_at->isPast()) {
                 throw new AuctionEndedException('This auction has already ended.');
             }
 

@@ -1,9 +1,9 @@
 <script setup lang="ts">
+import { Head, Link } from '@inertiajs/vue3'
 import AppLayout from '@/layouts/AppLayout.vue'
 import auctions from '@/routes/auctions'
 import lots from '@/routes/lots'
-import { type Auction, type BreadcrumbItem } from '@/types'
-import { Head, Link } from '@inertiajs/vue3'
+import type { Auction, BreadcrumbItem } from '@/types'
 
 interface Props {
   auction: Auction;
@@ -32,10 +32,6 @@ const breadcrumbs: BreadcrumbItem[] = [
         <h1 class="text-2xl font-semibold tracking-tight">
           {{ auction.name }}
         </h1>
-        <div class="mt-3 space-y-1 text-sm text-muted-foreground">
-          <p><strong>Starts:</strong> {{ new Date(auction.starts_at).toLocaleString() }}</p>
-          <p><strong>Ends:</strong> {{ new Date(auction.ends_at).toLocaleString() }}</p>
-        </div>
       </div>
 
       <div class="flex items-center justify-between">
@@ -58,6 +54,7 @@ const breadcrumbs: BreadcrumbItem[] = [
             <h3 class="text-lg font-semibold tracking-tight">
               {{ lot.title }}
             </h3>
+
             <div class="mt-3 space-y-1 text-sm text-muted-foreground">
               <p>
                 Starting Price: <span class="font-semibold text-foreground">${{ lot.starting_price }}</span>
@@ -65,6 +62,11 @@ const breadcrumbs: BreadcrumbItem[] = [
               <p>
                 Current Price: <span class="font-semibold text-foreground">${{ lot.current_price }}</span>
               </p>
+            </div>
+
+            <div class="mt-3 space-y-1 text-sm text-muted-foreground">
+              <p><strong>Starts:</strong> {{ new Date(lot.starts_at).toLocaleString() }}</p>
+              <p><strong>Ends:</strong> {{ new Date(lot.ends_at).toLocaleString() }}</p>
             </div>
           </div>
         </Link>

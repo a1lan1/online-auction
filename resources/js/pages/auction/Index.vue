@@ -1,8 +1,8 @@
 <script setup lang="ts">
+import { Head, Link } from '@inertiajs/vue3'
 import AppLayout from '@/layouts/AppLayout.vue'
 import auctionRoutes from '@/routes/auctions'
 import type { Auction, BreadcrumbItem } from '@/types'
-import { Head, Link } from '@inertiajs/vue3'
 
 interface Props {
   auctions: Auction[];
@@ -44,8 +44,8 @@ const breadcrumbs: BreadcrumbItem[] = [
               {{ auction.name }}
             </h2>
             <div class="mt-3 space-y-1 text-sm text-muted-foreground">
-              <p><strong>Starts:</strong> {{ new Date(auction.starts_at).toLocaleString() }}</p>
-              <p><strong>Ends:</strong> {{ new Date(auction.ends_at).toLocaleString() }}</p>
+              <p><strong>Owner:</strong> {{ auction.owner.name }}</p>
+              <p><strong>Active Lots:</strong> {{ auction.lots_count }}</p>
             </div>
           </div>
         </Link>

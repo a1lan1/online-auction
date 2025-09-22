@@ -12,11 +12,7 @@ return new class extends Migration
             $table->id();
             $table->string('name');
             $table->foreignId('user_id')->constrained()->onDelete('cascade');
-            $table->dateTime('starts_at');
-            $table->dateTime('ends_at');
             $table->timestamps();
-
-            $table->index(['starts_at', 'ends_at']);
         });
     }
 
