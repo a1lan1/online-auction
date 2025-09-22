@@ -1,8 +1,9 @@
 <script setup lang="ts">
 import type { Lot } from '@/types'
+import LotStatusTag from '@/components/auction/LotStatusTag.vue'
 
 defineProps<{
-  lot: Lot;
+  lot: Lot
 }>()
 </script>
 
@@ -11,19 +12,25 @@ defineProps<{
     <h1 class="text-3xl font-bold tracking-tight">
       {{ lot.title }}
     </h1>
+
+    <LotStatusTag :status="lot.status" />
+
     <p
       v-if="lot.description"
       class="mt-3 text-muted-foreground"
     >
       {{ lot.description }}
     </p>
-    <div class="mt-4 flex items-baseline gap-6">
-      <p class="text-md text-muted-foreground">
-        Starting Price: <span class="font-semibold text-foreground">${{ lot.starting_price }}</span>
-      </p>
-      <p class="text-xl font-bold text-primary">
-        Current Price: <span class="font-semibold">${{ lot.current_price }}</span>
-      </p>
+
+    <div class="mt-4 flex items-baseline gap-3">
+      <div class="mt-3 space-y-1 text-sm text-muted-foreground">
+        <p class="text-md">
+          Starting Price: <span class="font-semibold text-foreground">$ {{ lot.starting_price }}</span>
+        </p>
+        <p class="text-lg font-bold">
+          Current Price: <span class="font-semibold text-foreground">$ {{ lot.current_price }}</span>
+        </p>
+      </div>
     </div>
   </div>
 </template>

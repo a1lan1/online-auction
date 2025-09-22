@@ -2,6 +2,7 @@
 
 namespace Database\Factories;
 
+use App\Enums\LotStatus;
 use App\Models\Auction;
 use App\Models\Lot;
 use Illuminate\Database\Eloquent\Factories\Factory;
@@ -23,6 +24,7 @@ class LotFactory extends Factory
             'starts_at' => now()->subDays(5),
             'ends_at' => fake()->dateTimeBetween('-2 days', '+5 days'),
             'starting_price' => fake()->randomFloat(2, 100, 1000),
+            'status' => fake()->randomElement(LotStatus::values()),
         ];
     }
 }

@@ -15,8 +15,11 @@ return new class extends Migration
             $table->text('description')->nullable();
             $table->decimal('starting_price', 10, 2);
             $table->decimal('current_price', 10, 2)->default(0);
+            $table->string('status')->default(LotStatus::PENDING->value);
 
             $table->foreignId('auction_id')->constrained()->onDelete('cascade');
+            $table->foreignId('winner_id')->nullable()->constrained('users')->nullOnDelete();
+            $table->foreignId('winning_bid_id')->nullable()->constrained('bids')->nullOnDelete();
 
             $table->dateTime('starts_at');
             $table->dateTime('ends_at');

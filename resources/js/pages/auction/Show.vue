@@ -4,6 +4,7 @@ import AppLayout from '@/layouts/AppLayout.vue'
 import auctions from '@/routes/auctions'
 import lots from '@/routes/lots'
 import type { Auction, BreadcrumbItem } from '@/types'
+import LotStatusTag from '@/components/auction/LotStatusTag.vue'
 
 interface Props {
   auction: Auction;
@@ -54,6 +55,8 @@ const breadcrumbs: BreadcrumbItem[] = [
             <h3 class="text-lg font-semibold tracking-tight">
               {{ lot.title }}
             </h3>
+
+            <LotStatusTag :status="lot.status" />
 
             <div class="mt-3 space-y-1 text-sm text-muted-foreground">
               <p>

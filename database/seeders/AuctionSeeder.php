@@ -2,6 +2,7 @@
 
 namespace Database\Seeders;
 
+use App\Enums\LotStatus;
 use App\Models\Auction;
 use App\Models\Lot;
 use App\Models\User;
@@ -18,6 +19,9 @@ class AuctionSeeder extends Seeder
 
         Auction::factory(15)
             ->create(['user_id' => $users->random()->id])
-            ->each(fn (Auction $auction) => Lot::factory(5)->create(['auction_id' => $auction->id]));
+            ->each(fn (Auction $auction) => Lot::factory(9)->create([
+                'auction_id' => $auction->id,
+                'status' => LotStatus::ACTIVE,
+            ]));
     }
 }
