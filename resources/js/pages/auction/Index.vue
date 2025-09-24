@@ -1,8 +1,8 @@
 <script setup lang="ts">
-import { Head, Link } from '@inertiajs/vue3'
 import AppLayout from '@/layouts/AppLayout.vue'
 import auctionRoutes from '@/routes/auctions'
 import type { Auction, BreadcrumbItem } from '@/types'
+import { Head, Link } from '@inertiajs/vue3'
 
 interface Props {
   auctions: Auction[];

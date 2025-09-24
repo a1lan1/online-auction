@@ -1,10 +1,10 @@
 <script setup lang="ts">
-import { computed } from 'vue'
-import Tag from 'primevue/tag'
 import type { LotStatus } from '@/types'
+import Tag from 'primevue/tag'
+import { computed } from 'vue'
 
 const props = defineProps<{
-  status: LotStatus
+  status: LotStatus;
 }>()
 
 const severity = computed(() => {

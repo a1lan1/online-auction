@@ -1,10 +1,10 @@
 <script setup lang="ts">
-import { Head, Link } from '@inertiajs/vue3'
+import LotStatusTag from '@/components/auction/LotStatusTag.vue'
 import AppLayout from '@/layouts/AppLayout.vue'
 import auctions from '@/routes/auctions'
 import lots from '@/routes/lots'
 import type { Auction, BreadcrumbItem } from '@/types'
-import LotStatusTag from '@/components/auction/LotStatusTag.vue'
+import { Head, Link } from '@inertiajs/vue3'
 
 interface Props {
   auction: Auction;

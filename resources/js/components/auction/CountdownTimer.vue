@@ -1,7 +1,7 @@
 <script setup lang="ts">
+import TimeUnit from '@/components/auction/TimeUnit.vue'
 import { useCountdown } from '@/composables/useCountdown'
 import { TimeConfigItem } from '@/types'
-import TimeUnit from '@/components/auction/TimeUnit.vue'
 
 interface Props {
   date: string;
@@ -58,7 +58,7 @@ const timeConfig: TimeConfigItem[] = [
 
 .flipTimer {
   color: #111111;
-  font-family: "Helvetica Neue", Helvetica, sans-serif;
+  font-family: 'Helvetica Neue', Helvetica, sans-serif;
   font-size: 90px;
   font-weight: bold;
   line-height: 100px;

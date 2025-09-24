@@ -1,7 +1,7 @@
 <script setup lang="ts">
-import { computed } from 'vue'
-import { usePage } from '@inertiajs/vue3'
 import type { Bid, User } from '@/types'
+import { usePage } from '@inertiajs/vue3'
+import { computed } from 'vue'
 
 interface Props {
   bids?: Bid[];

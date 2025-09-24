@@ -1,10 +1,10 @@
 <script setup lang="ts">
-import { onMounted } from 'vue'
-import confetti from 'canvas-confetti'
 import type { Lot } from '@/types'
+import confetti from 'canvas-confetti'
+import { onMounted } from 'vue'
 
 const props = defineProps<{
-  lot: Lot
+  lot: Lot;
 }>()
 
 const launchConfetti = () => {
@@ -17,14 +17,7 @@ const launchConfetti = () => {
     ticks: 500,
     zIndex: 0,
     gravity: 1,
-    colors: [
-      '#63b163',
-      '#0988b6',
-      '#FF1493',
-      '#c75f15',
-      '#b60909',
-      '#ffffff'
-    ]
+    colors: ['#63b163', '#0988b6', '#FF1493', '#c75f15', '#b60909', '#ffffff']
   }
 
   function randomInRange(min: number, max: number): number {

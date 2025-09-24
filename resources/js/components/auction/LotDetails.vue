@@ -1,9 +1,9 @@
 <script setup lang="ts">
-import type { Lot } from '@/types'
 import LotStatusTag from '@/components/auction/LotStatusTag.vue'
+import type { Lot } from '@/types'
 
 defineProps<{
-  lot: Lot
+  lot: Lot;
 }>()
 </script>
 

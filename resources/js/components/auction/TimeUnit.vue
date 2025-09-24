@@ -136,7 +136,7 @@ defineProps<Props>()
 
 .digit > div.digit-top:before,
 .digit > div.shadow-top:before {
-  content: "";
+  content: '';
   box-shadow: inset 0 10px 25px rgba(0, 0, 0, 0.4);
   height: 100%;
   width: 100%;
@@ -146,13 +146,7 @@ defineProps<Props>()
 }
 
 .digit > div.shadow-top {
-  background: -webkit-gradient(
-    linear,
-    0% 0%,
-    0% 100%,
-    from(rgba(0, 0, 0, 0)),
-    to(black)
-  );
+  background: -webkit-gradient(linear, 0% 0%, 0% 100%, from(rgba(0, 0, 0, 0)), to(black));
   width: 100%;
   opacity: 0;
   -webkit-transition: opacity 0.3s ease-in;
@@ -174,7 +168,7 @@ defineProps<Props>()
 
 .digit > div.digit-bottom:before,
 .digit > div.shadow-bottom:before {
-  content: "";
+  content: '';
   box-shadow: inset 0 10px 25px rgba(0, 0, 0, 0.3);
   border-radius: 0 0 10px 10px;
   height: 100%;
@@ -185,13 +179,7 @@ defineProps<Props>()
 }
 
 .digit > div.shadow-bottom {
-  background: -webkit-gradient(
-    linear,
-    0% 0%,
-    0% 100%,
-    from(black),
-    to(rgba(0, 0, 0, 0))
-  );
+  background: -webkit-gradient(linear, 0% 0%, 0% 100%, from(black), to(rgba(0, 0, 0, 0)));
   width: 100%;
   opacity: 0;
   -webkit-transition: opacity 0.3s ease-in;
@@ -222,12 +210,20 @@ defineProps<Props>()
 }
 
 @keyframes flipTop {
-  0% { transform: perspective(400px) rotateX(0deg); }
-  100% { transform: perspective(400px) rotateX(-90deg); }
+  0% {
+    transform: perspective(400px) rotateX(0deg);
+  }
+  100% {
+    transform: perspective(400px) rotateX(-90deg);
+  }
 }
 
 @keyframes flipBottom {
-  0% { transform: perspective(400px) rotateX(90deg); }
-  100% { transform: perspective(400px) rotateX(0deg); }
+  0% {
+    transform: perspective(400px) rotateX(90deg);
+  }
+  100% {
+    transform: perspective(400px) rotateX(0deg);
+  }
 }
 </style>

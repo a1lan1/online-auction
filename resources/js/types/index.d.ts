@@ -24,7 +24,7 @@ export type AppPageProps<T extends Record<string, unknown> = Record<string, unkn
   sidebarOpen: boolean;
 };
 
-export type LotStatus = 'pending' | 'active' | 'finished' | 'canceled'
+export type LotStatus = 'pending' | 'active' | 'finished' | 'canceled';
 
 // Models
 export interface User {

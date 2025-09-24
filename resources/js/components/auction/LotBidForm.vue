@@ -1,11 +1,11 @@
 <script setup lang="ts">
-import { useCountdown } from '@/composables/useCountdown'
-import InputNumber from 'primevue/inputnumber'
-import { ref, toRef } from 'vue'
-import { usePlaceBid } from '@/composables/usePlaceBid'
 import PlaceBidBtn from '@/components/auction/PlaceBidBtn.vue'
+import { useCountdown } from '@/composables/useCountdown'
+import { usePlaceBid } from '@/composables/usePlaceBid'
 import type { Lot } from '@/types'
+import InputNumber from 'primevue/inputnumber'
 import type { ComponentPublicInstance } from 'vue'
+import { ref, toRef } from 'vue'
 
 const props = defineProps<{
   lot: Lot;

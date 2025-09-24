@@ -1,10 +1,10 @@
-import { computed, Ref, watch } from 'vue'
-import { useForm } from '@inertiajs/vue3'
-import { useToast } from 'primevue/usetoast'
-import confetti from 'canvas-confetti'
 import lots from '@/routes/lots'
 import type { Lot } from '@/types'
+import { useForm } from '@inertiajs/vue3'
+import confetti from 'canvas-confetti'
+import { useToast } from 'primevue/usetoast'
 import type { ComponentPublicInstance } from 'vue'
+import { computed, Ref, watch } from 'vue'
 
 export function usePlaceBid(lot: Ref<Lot>, buttonRef: Ref<ComponentPublicInstance | undefined>) {
   const toast = useToast()
@@ -60,12 +60,13 @@ export function usePlaceBid(lot: Ref<Lot>, buttonRef: Ref<ComponentPublicInstanc
           })
         }
       },
-      onError: (errors) => toast.add({
-        severity: 'error',
-        summary: 'Error placing bid',
-        detail: errors.amount || 'An error occurred while placing the bid.',
-        life: 3000
-      }),
+      onError: (errors) =>
+        toast.add({
+          severity: 'error',
+          summary: 'Error placing bid',
+          detail: errors.amount || 'An error occurred while placing the bid.',
+          life: 3000
+        }),
       onFinish: () => (form.processing = false)
     })
   }

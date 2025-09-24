@@ -1,22 +1,22 @@
 <script setup lang="ts">
-import { computed, onMounted, onUnmounted, watch } from 'vue'
-import { storeToRefs } from 'pinia'
-import { Head } from '@inertiajs/vue3'
-import useEcho from '@/composables/useEcho'
-import { useAuctionStore } from '@/stores/auction'
-import { useCountdown } from '@/composables/useCountdown'
-import lots from '@/routes/lots'
-import auctions from '@/routes/auctions'
-import type { BreadcrumbItem, Lot, Bid } from '@/types'
-import AppLayout from '@/layouts/AppLayout.vue'
-import LotBidForm from '@/components/auction/LotBidForm.vue'
 import BidsHistory from '@/components/auction/BidsHistory.vue'
+import CountdownTimer from '@/components/auction/CountdownTimer.vue'
+import LotBidForm from '@/components/auction/LotBidForm.vue'
 import LotDetails from '@/components/auction/LotDetails.vue'
 import WinnerDisplay from '@/components/auction/WinnerDisplay.vue'
-import CountdownTimer from '@/components/auction/CountdownTimer.vue'
+import { useCountdown } from '@/composables/useCountdown'
+import useEcho from '@/composables/useEcho'
+import AppLayout from '@/layouts/AppLayout.vue'
+import auctions from '@/routes/auctions'
+import lots from '@/routes/lots'
+import { useAuctionStore } from '@/stores/auction'
+import type { Bid, BreadcrumbItem, Lot } from '@/types'
+import { Head } from '@inertiajs/vue3'
+import { storeToRefs } from 'pinia'
+import { computed, onMounted, onUnmounted, watch } from 'vue'
 
 const props = defineProps<{
-  lot: Lot
+  lot: Lot;
 }>()
 
 const { listen, leave } = useEcho()
@@ -32,7 +32,7 @@ const breadcrumbs: BreadcrumbItem[] = [
   { title: props.lot.title, href: lots.show(props.lot.id).url }
 ]
 
-const showCountdownTimer = computed(() => (currentLot.value?.status === 'active' || currentLot.value?.status === 'finished'))
+const showCountdownTimer = computed(() => currentLot.value?.status === 'active' || currentLot.value?.status === 'finished')
 
 watch(isFinished, (finished) => {
   if (finished) {
@@ -42,16 +42,8 @@ watch(isFinished, (finished) => {
 
 onMounted(() => {
   setLot(props.lot)
-  listen(
-    `auctions.${props.lot.auction_id}`,
-    '.bid.new',
-    (e: { bid: Bid }) => addNewBid(e.bid)
-  )
-  listen(
-    `auctions.${props.lot.auction_id}`,
-    '.lot.finished',
-    (e: { lot: Lot }) => setLot(e.lot)
-  )
+  listen(`auctions.${props.lot.auction_id}`, '.bid.new', (e: { bid: Bid }) => addNewBid(e.bid))
+  listen(`auctions.${props.lot.auction_id}`, '.lot.finished', (e: { lot: Lot }) => setLot(e.lot))
 })
 
 onUnmounted(() => {
