@@ -3,7 +3,6 @@
 namespace App\Services;
 
 use App\Contracts\AuctionServiceInterface;
-use App\Enums\LotStatus;
 use App\Models\Auction;
 use App\Models\Lot;
 use Illuminate\Database\Eloquent\Builder;
@@ -32,7 +31,7 @@ class AuctionService implements AuctionServiceInterface
         return Cache::remember("auctions.{$auction->id}", now()->addHours(2), function () use ($auction) {
             return $auction->load([
                 'owner:id,name',
-                'lots' => fn (HasMany $q) => $q->whereNot('status', LotStatus::PENDING),
+                'lots' => fn (HasMany $query) => $query->active()->finished(),
             ]);
         });
     }

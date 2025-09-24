@@ -3,6 +3,7 @@
 namespace App\Console\Commands;
 
 use App\Actions\FinalizeLotAction;
+use App\Enums\LotStatus;
 use App\Models\Lot;
 use Illuminate\Console\Command;
 
@@ -20,7 +21,7 @@ class FinalizeAuctions extends Command
         $this->info('Starting to finalize ended auctions...');
 
         // Looking for active lots whose time has already expired.
-        $endedLots = Lot::active()
+        $endedLots = Lot::where('status', LotStatus::ACTIVE)
             ->where('ends_at', '<=', now())
             ->with('bids')
             ->get();

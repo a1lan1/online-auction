@@ -113,12 +113,14 @@ class Lot extends Model
     #[Scope]
     protected function active(Builder $query): void
     {
-        $query->where('status', LotStatus::ACTIVE);
+        $query->where('status', LotStatus::ACTIVE)
+            ->where('starts_at', '<=', now())
+            ->where('ends_at', '>=', now());
     }
 
     #[Scope]
     protected function finished(Builder $query): void
     {
-        $query->where('status', LotStatus::FINISHED);
+        $query->orWhere('status', LotStatus::FINISHED);
     }
 }
