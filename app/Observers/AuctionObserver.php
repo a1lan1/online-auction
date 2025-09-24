@@ -31,6 +31,6 @@ class AuctionObserver implements ShouldHandleEventsAfterCommit
 
     protected function clearAuctionCache(Auction $auction): void
     {
-        Cache::forget("auctions.{$auction->id}");
+        Cache::forget('auctions.'.$auction->id);
     }
 }

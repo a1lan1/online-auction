@@ -8,7 +8,7 @@ return new class extends Migration
 {
     public function up(): void
     {
-        Schema::table('lots', function (Blueprint $table) {
+        Schema::table('lots', function (Blueprint $table): void {
             $table->foreignId('winner_id')->after('auction_id')->nullable()->constrained('users')->nullOnDelete();
             $table->foreignId('winning_bid_id')->after('winner_id')->nullable()->constrained('bids')->nullOnDelete();
         });
@@ -16,7 +16,7 @@ return new class extends Migration
 
     public function down(): void
     {
-        Schema::table('lots', function (Blueprint $table) {
+        Schema::table('lots', function (Blueprint $table): void {
             $table->dropForeign(['winner_id', 'winning_bid_id']);
             $table->dropColumn(['winner_id', 'winning_bid_id']);
         });

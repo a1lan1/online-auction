@@ -27,10 +27,10 @@ class LotSoldNotification extends Notification implements ShouldQueue
         $winner = $this->lot->winner;
 
         return (new MailMessage)
-            ->subject("Your lot \"{$this->lot->title}\" has been sold!")
-            ->line("Good news, {$notifiable->name}!")
-            ->line("Your lot, **{$this->lot->title}**, has been sold for **\${$this->lot->winnerBid->amount}**.")
-            ->line("The winning bidder is {$winner->name}.")
+            ->subject(sprintf('Your lot "%s" has been sold!', $this->lot->title))
+            ->line(sprintf('Good news, %s!', $notifiable->name))
+            ->line(sprintf('Your lot, **%s**, has been sold for **$%s**.', $this->lot->title, $this->lot->winnerBid->amount))
+            ->line(sprintf('The winning bidder is %s.', $winner->name))
             ->action('View Lot', route('lots.show', $this->lot))
             ->line('The winner has been notified and will be in touch regarding payment and delivery.');
     }

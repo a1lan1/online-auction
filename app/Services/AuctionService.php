@@ -6,7 +6,6 @@ use App\Contracts\AuctionServiceInterface;
 use App\Models\Auction;
 use App\Models\Lot;
 use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Cache;
 
@@ -28,10 +27,10 @@ class AuctionService implements AuctionServiceInterface
 
     public function getAuctionWithLots(Auction $auction): Auction
     {
-        return Cache::remember("auctions.{$auction->id}", now()->addHours(2), function () use ($auction) {
+        return Cache::remember('auctions.'.$auction->id, now()->addHours(2), function () use ($auction) {
             return $auction->load([
                 'owner:id,name',
-                'lots' => fn (HasMany $query) => $query->active()->finished(),
+                'lots' => fn ($query) => $query->active()->finished(),
             ]);
         });
     }

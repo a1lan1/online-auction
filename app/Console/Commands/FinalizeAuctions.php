@@ -6,6 +6,7 @@ use App\Actions\FinalizeLotAction;
 use App\Enums\LotStatus;
 use App\Models\Lot;
 use Illuminate\Console\Command;
+use Throwable;
 
 class FinalizeAuctions extends Command
 {
@@ -14,7 +15,7 @@ class FinalizeAuctions extends Command
     protected $description = 'Finalize auction lots that have ended';
 
     /**
-     * @throws \Throwable
+     * @throws Throwable
      */
     public function handle(FinalizeLotAction $finalizeLotAction): int
     {
@@ -32,11 +33,11 @@ class FinalizeAuctions extends Command
             return self::SUCCESS;
         }
 
-        $this->info("Found {$endedLots->count()} lots to process.");
+        $this->info(sprintf('Found %s lots to process.', $endedLots->count()));
 
         foreach ($endedLots as $lot) {
             $finalizeLotAction->execute($lot);
-            $this->info("Processed lot #{$lot->id}: {$lot->title}");
+            $this->info(sprintf('Processed lot #%s: %s', $lot->id, $lot->title));
         }
 
         $this->info('All ended lots have been processed.');

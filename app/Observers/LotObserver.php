@@ -20,6 +20,6 @@ class LotObserver implements ShouldHandleEventsAfterCommit
 
     protected function clearLotCache(Lot $lot): void
     {
-        Cache::forget("lots.{$lot->id}");
+        Cache::forget('lots.'.$lot->id);
     }
 }

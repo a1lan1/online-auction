@@ -10,11 +10,12 @@ use App\Exceptions\UserIsLeadingException;
 use App\Models\Bid;
 use App\Models\Lot;
 use Illuminate\Support\Facades\DB;
+use Throwable;
 
 class BidService implements BidServiceInterface
 {
     /**
-     * @throws \Throwable
+     * @throws Throwable
      */
     public function placeBid(BidData $data): Bid
     {

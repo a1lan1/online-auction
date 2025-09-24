@@ -25,9 +25,9 @@ class LotNotSoldNotification extends Notification implements ShouldQueue
     public function toMail(object $notifiable): MailMessage
     {
         return (new MailMessage)
-            ->subject("Your lot \"{$this->lot->title}\" was not sold")
-            ->line("Hello, {$notifiable->name}.")
-            ->line("The auction for your lot, **{$this->lot->title}**, has ended without any bids.")
+            ->subject(sprintf('Your lot "%s" was not sold', $this->lot->title))
+            ->line(sprintf('Hello, %s.', $notifiable->name))
+            ->line(sprintf('The auction for your lot, **%s**, has ended without any bids.', $this->lot->title))
             ->line('You may want to consider relisting it, perhaps with a lower starting price.')
             ->action('View Lot', route('lots.show', $this->lot));
     }

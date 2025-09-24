@@ -4,9 +4,11 @@ namespace App\Models;
 
 use App\Enums\LotStatus;
 use App\Observers\LotObserver;
+use Database\Factories\LotFactory;
 use Illuminate\Database\Eloquent\Attributes\ObservedBy;
 use Illuminate\Database\Eloquent\Attributes\Scope;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -27,14 +29,14 @@ use Illuminate\Support\Carbon;
  * @property Carbon $ends_at
  * @property Carbon|null $created_at
  * @property Carbon|null $updated_at
- * @property-read \App\Models\Auction $auction
- * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Bid> $bids
+ * @property-read Auction $auction
+ * @property-read Collection<int, Bid> $bids
  * @property-read int|null $bids_count
- * @property-read \App\Models\User|null $winner
- * @property-read \App\Models\Bid|null $winnerBid
+ * @property-read User|null $winner
+ * @property-read Bid|null $winnerBid
  *
  * @method static Builder<static>|Lot active()
- * @method static \Database\Factories\LotFactory factory($count = null, $state = [])
+ * @method static LotFactory factory($count = null, $state = [])
  * @method static Builder<static>|Lot finished()
  * @method static Builder<static>|Lot newModelQuery()
  * @method static Builder<static>|Lot newQuery()
@@ -58,7 +60,7 @@ use Illuminate\Support\Carbon;
 #[ObservedBy([LotObserver::class])]
 class Lot extends Model
 {
-    /** @use HasFactory<\Database\Factories\LotFactory> */
+    /** @use HasFactory<LotFactory> */
     use HasFactory;
 
     protected $fillable = [

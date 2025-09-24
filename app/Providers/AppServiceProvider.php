@@ -9,6 +9,8 @@ use App\Services\AuctionService;
 use App\Services\BidService;
 use App\Services\LotService;
 use Illuminate\Support\ServiceProvider;
+use Override;
+
 // use App\Models\Auction;
 // use App\Models\Lot;
 // use App\Models\Bid;
@@ -21,6 +23,7 @@ class AppServiceProvider extends ServiceProvider
     /**
      * Register any application services.
      */
+    #[Override]
     public function register(): void
     {
         $this->app->bind(AuctionServiceInterface::class, AuctionService::class);

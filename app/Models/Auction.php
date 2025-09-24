@@ -3,38 +3,42 @@
 namespace App\Models;
 
 use App\Observers\AuctionObserver;
+use Database\Factories\AuctionFactory;
 use Illuminate\Database\Eloquent\Attributes\ObservedBy;
+use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Support\Carbon;
 
 /**
  * @property int $id
  * @property string $name
  * @property int $user_id
- * @property \Illuminate\Support\Carbon|null $created_at
- * @property \Illuminate\Support\Carbon|null $updated_at
- * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Lot> $lots
+ * @property Carbon|null $created_at
+ * @property Carbon|null $updated_at
+ * @property-read Collection<int, Lot> $lots
  * @property-read int|null $lots_count
- * @property-read \App\Models\User $owner
+ * @property-read User $owner
  *
- * @method static \Database\Factories\AuctionFactory factory($count = null, $state = [])
- * @method static \Illuminate\Database\Eloquent\Builder<static>|Auction newModelQuery()
- * @method static \Illuminate\Database\Eloquent\Builder<static>|Auction newQuery()
- * @method static \Illuminate\Database\Eloquent\Builder<static>|Auction query()
- * @method static \Illuminate\Database\Eloquent\Builder<static>|Auction whereCreatedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|Auction whereId($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|Auction whereName($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|Auction whereUpdatedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|Auction whereUserId($value)
+ * @method static AuctionFactory factory($count = null, $state = [])
+ * @method static Builder<static>|Auction newModelQuery()
+ * @method static Builder<static>|Auction newQuery()
+ * @method static Builder<static>|Auction query()
+ * @method static Builder<static>|Auction whereCreatedAt($value)
+ * @method static Builder<static>|Auction whereId($value)
+ * @method static Builder<static>|Auction whereName($value)
+ * @method static Builder<static>|Auction whereUpdatedAt($value)
+ * @method static Builder<static>|Auction whereUserId($value)
  *
  * @mixin \Eloquent
  */
 #[ObservedBy([AuctionObserver::class])]
 class Auction extends Model
 {
-    /** @use HasFactory<\Database\Factories\AuctionFactory> */
+    /** @use HasFactory<AuctionFactory> */
     use HasFactory;
 
     /**

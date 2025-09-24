@@ -27,7 +27,7 @@ class BidSeeder extends Seeder
             return;
         }
 
-        $lots->each(function (Lot $lot) use ($users) {
+        $lots->each(function (Lot $lot) use ($users): void {
             $bidsCount = random_int(1, 10);
             $lastAmount = $lot->starting_price;
 
@@ -37,7 +37,7 @@ class BidSeeder extends Seeder
 
             // Use iteration with an index to create chronological timestamps.
             // The values() method resets collection keys to a zero-based index (0, 1, 2...).
-            $biddingUsers->values()->each(function (User $user, int $index) use ($lot, &$lastAmount, $numberOfBidders) {
+            $biddingUsers->values()->each(function (User $user, int $index) use ($lot, &$lastAmount, $numberOfBidders): void {
                 $lastAmount += random_int(10, 100);
 
                 // Create bids in chronological order, with the last bid being the most recent.

@@ -26,9 +26,9 @@ class LotWonNotification extends Notification implements ShouldQueue
     {
         return (new MailMessage)
             ->subject("Congratulations! You've won a lot!")
-            ->line("Congratulations, {$notifiable->name}!")
-            ->line("You have won the auction for the lot: **{$this->lot->title}**.")
-            ->line("Your winning bid was **\${$this->lot->winnerBid->amount}**.")
+            ->line(sprintf('Congratulations, %s!', $notifiable->name))
+            ->line(sprintf('You have won the auction for the lot: **%s**.', $this->lot->title))
+            ->line(sprintf('Your winning bid was **$%s**.', $this->lot->winnerBid->amount))
             ->action('View Lot', route('lots.show', $this->lot))
             ->line('Thank you for using our auction platform!');
     }

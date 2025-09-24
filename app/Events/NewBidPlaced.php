@@ -12,7 +12,9 @@ use Illuminate\Queue\SerializesModels;
 
 class NewBidPlaced implements ShouldBroadcast
 {
-    use Dispatchable, InteractsWithSockets, SerializesModels;
+    use Dispatchable;
+    use InteractsWithSockets;
+    use SerializesModels;
 
     public function __construct(public readonly Bid $bid) {}
 
