@@ -37,6 +37,12 @@ function openInNewTab(url: string) {
           <Button
             size="small"
             severity="secondary"
+            label="Mailpit"
+            @click="openInNewTab('http://localhost:8025')"
+          />
+          <Button
+            size="small"
+            severity="secondary"
             label="Telescope"
             @click="openInNewTab(telescope().url)"
           />
