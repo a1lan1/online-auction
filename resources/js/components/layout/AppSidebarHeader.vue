@@ -4,6 +4,7 @@ import { SidebarTrigger } from '@/components/ui/sidebar'
 import { login, register, telescope } from '@/routes'
 import { index as horizon } from '@/routes/horizon'
 import { index as logViewer } from '@/routes/log-viewer'
+import { defaultMethod as prometheus } from '@/routes/prometheus'
 import type { BreadcrumbItemType } from '@/types'
 import { Link } from '@inertiajs/vue3'
 import Button from 'primevue/button'
@@ -36,6 +37,18 @@ function openInNewTab(url: string) {
 
       <div class="flex gap-2">
         <template v-if="$page.props.auth.user">
+          <Button
+            size="small"
+            severity="secondary"
+            label="Grafana"
+            @click="openInNewTab('http://localhost:3000/dashboards')"
+          />
+          <Button
+            size="small"
+            severity="secondary"
+            label="Prometheus"
+            @click="openInNewTab(prometheus.url())"
+          />
           <Button
             size="small"
             severity="secondary"

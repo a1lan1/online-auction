@@ -122,6 +122,36 @@ services:
         networks:
             - sail
 
+    prometheus:
+        image: prom/prometheus:v2.47.2
+        ports:
+            - '9090:9090'
+        volumes:
+            - './prometheus:/etc/prometheus'
+            - 'sail-prometheus:/prometheus'
+        command:
+            - '--config.file=/etc/prometheus/prometheus.yml'
+        networks:
+            - sail
+        depends_on:
+            - laravel.test
+
+    grafana:
+        image: grafana/grafana:10.1.5
+        ports:
+            - '3000:3000'
+        volumes:
+            - 'sail-grafana:/var/lib/grafana'
+            - './grafana/provisioning:/etc/grafana/provisioning'
+        environment:
+            - GF_SECURITY_ADMIN_USER=${GF_ADMIN_USER:-admin}
+            - GF_SECURITY_ADMIN_PASSWORD=${GF_ADMIN_PASSWORD:-password}
+            - GF_USERS_ALLOW_SIGN_UP=false
+        networks:
+            - sail
+        depends_on:
+            - prometheus
+
 networks:
     sail:
         driver: bridge
@@ -130,4 +160,8 @@ volumes:
     sail-pgsql:
         driver: local
     sail-redis:
+        driver: local
+    sail-prometheus:
+        driver: local
+    sail-grafana:
         driver: local
