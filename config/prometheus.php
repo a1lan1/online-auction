@@ -1,5 +1,8 @@
 <?php
 
+use Spatie\Prometheus\Actions\RenderCollectorsAction;
+use Spatie\Prometheus\Http\Middleware\AllowIps;
+
 return [
     'enabled' => true,
 
@@ -22,13 +25,13 @@ return [
      * This is the default namespace that will be
      * used by all metrics
      */
-    'default_namespace' => 'app',
+    'default_namespace' => null,
 
     /*
      * The middleware that will be applied to the urls above
      */
     'middleware' => [
-        Spatie\Prometheus\Http\Middleware\AllowIps::class,
+        AllowIps::class,
     ],
 
     /*
@@ -36,7 +39,7 @@ return [
      * In most cases, you can just use the defaults.
      */
     'actions' => [
-        'render_collectors' => Spatie\Prometheus\Actions\RenderCollectorsAction::class,
+        'render_collectors' => RenderCollectorsAction::class,
     ],
 
     /**
@@ -55,5 +58,6 @@ return [
      *  'cache' => null       // InMemory implementation without laravel cache
      *  'cache' => 'array'    // InMemory implementation using laravel cache
      */
-    'cache' => null,
+    // Persist metrics between requests/workers so that /metrics sees increments
+    'cache' => 'redis',
 ];
