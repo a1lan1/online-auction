@@ -8,11 +8,11 @@ use App\DTOs\BidData;
 use App\Http\Requests\PlaceBidRequest;
 use App\Models\Bid;
 use App\Models\Lot;
-use Exception;
 use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Http\RedirectResponse;
 use Inertia\Inertia;
 use Inertia\Response;
+use Throwable;
 
 class LotController extends Controller
 {
@@ -45,8 +45,8 @@ class LotController extends Controller
                     amount: $request->validated('amount'),
                 )
             );
-        } catch (Exception $exception) {
-            return back()->withErrors(['amount' => $exception->getMessage()]);
+        } catch (Throwable $throwable) {
+            return back()->withErrors(['amount' => $throwable->getMessage()]);
         }
 
         return back()->with('message', 'Your bid was placed successfully!');

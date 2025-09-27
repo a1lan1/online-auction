@@ -10,12 +10,9 @@ use Illuminate\Contracts\Queue\ShouldQueue;
 
 class SendLotNotification implements ShouldQueue
 {
-    /**
-     * Handle the event.
-     */
     public function handle(LotFinished $event): void
     {
-        $lot = $event->lot->loadMissing('winner', 'winnerBid', 'auction.owner');
+        $lot = $event->lot->loadMissing(['winner', 'winnerBid', 'auction.owner']);
 
         if ($lot->winner) {
             $lot->winner->notify(new LotWonNotification($lot));

@@ -23,12 +23,12 @@ use Illuminate\Support\Carbon;
  * @property numeric $current_price
  * @property LotStatus $status
  * @property int $auction_id
- * @property int|null $winner_id
- * @property int|null $winning_bid_id
  * @property Carbon $starts_at
  * @property Carbon $ends_at
  * @property Carbon|null $created_at
  * @property Carbon|null $updated_at
+ * @property int|null $winner_id
+ * @property int|null $winning_bid_id
  * @property-read Auction $auction
  * @property-read Collection<int, Bid> $bids
  * @property-read int|null $bids_count

@@ -11,13 +11,6 @@ use App\Services\LotService;
 use Illuminate\Support\ServiceProvider;
 use Override;
 
-// use App\Models\Auction;
-// use App\Models\Lot;
-// use App\Models\Bid;
-// use App\Observers\AuctionObserver;
-// use App\Observers\LotObserver;
-// use App\Observers\BidObserver;
-
 class AppServiceProvider extends ServiceProvider
 {
     /**
@@ -36,8 +29,6 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-        // Auction::observe(AuctionObserver::class);
-        // Lot::observe(LotObserver::class);
-        // Bid::observe(BidObserver::class);
+        //
     }
 }

@@ -7,6 +7,7 @@ use App\Collectors\BidMetricsCollector;
 use App\Collectors\HttpMetricsCollector;
 use App\Collectors\ModelCountCollector;
 use Illuminate\Support\ServiceProvider;
+use Override;
 use Spatie\Prometheus\Collectors\Horizon\CurrentMasterSupervisorCollector;
 use Spatie\Prometheus\Collectors\Horizon\CurrentProcessesPerQueueCollector;
 use Spatie\Prometheus\Collectors\Horizon\CurrentWorkloadCollector;
@@ -23,6 +24,7 @@ use Spatie\Prometheus\Facades\Prometheus;
 
 class PrometheusServiceProvider extends ServiceProvider
 {
+    #[Override]
     public function register(): void
     {
         $this->registerAppCollectors();
