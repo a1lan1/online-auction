@@ -2,7 +2,10 @@
 
 namespace App\Providers;
 
-use App\Models\User;
+use App\Collectors\AuctionMetricsCollector;
+use App\Collectors\BidMetricsCollector;
+use App\Collectors\HttpMetricsCollector;
+use App\Collectors\ModelCountCollector;
 use Illuminate\Support\ServiceProvider;
 use Spatie\Prometheus\Collectors\Horizon\CurrentMasterSupervisorCollector;
 use Spatie\Prometheus\Collectors\Horizon\CurrentProcessesPerQueueCollector;
@@ -22,25 +25,20 @@ class PrometheusServiceProvider extends ServiceProvider
 {
     public function register(): void
     {
-        /*
-         * Here you can register all the exporters that you
-         * want to export to prometheus
-         */
-        Prometheus::addGauge('User count')
-            ->helpText('The total number of users.')
-            ->value(fn () => User::count());
-
-        /*
-         * Uncomment this line if you want to export
-         * all Horizon metrics to prometheus
-         */
+        $this->registerAppCollectors();
         $this->registerHorizonCollectors();
+    }
 
-        /*
-         * Uncomment this line if you want to export queue metrics to Prometheus.
-         * You need to pass an array of queues to monitor.
-         */
-        // $this->registerQueueCollectors(['default']);
+    public function registerAppCollectors(): self
+    {
+        Prometheus::registerCollectorClasses([
+            ModelCountCollector::class,
+            HttpMetricsCollector::class,
+            AuctionMetricsCollector::class,
+            BidMetricsCollector::class,
+        ]);
+
+        return $this;
     }
 
     public function registerHorizonCollectors(): self
