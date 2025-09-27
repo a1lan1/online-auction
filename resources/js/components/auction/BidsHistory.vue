@@ -21,17 +21,17 @@ function getTime(date: string) {
   return new Date(date).getTime()
 }
 
-function getBidClass(bid: Bid) {
-  if (props.winner && bid.user_id === props.winner.id) {
-    return 'bg-green-900'
-  }
+function isWinner(bid: Bid) {
+  return props.winner && bid.user_id === props.winner.id
+}
 
-  return user.value && bid.user_id === user.value.id ? 'bg-blue-950' : 'bg-muted/50'
+function isCurrentUser(bid: Bid) {
+  return user.value && bid.user_id === user.value.id
 }
 </script>
 
 <template>
-  <div class="grid h-full grid-rows-[auto_1fr] gap-4 rounded-xl border bg-card p-6 text-card-foreground shadow-sm">
+  <div class="bids-history grid grid-rows-[auto_1fr] gap-4 rounded-xl border bg-card p-6 text-card-foreground shadow-sm">
     <h2 class="text-xl font-semibold">
       Bids History
     </h2>
@@ -46,7 +46,11 @@ function getBidClass(bid: Bid) {
           v-for="bid in sortedBids"
           :key="bid.id"
           class="flex items-center justify-between rounded-lg border px-3 py-1"
-          :class="getBidClass(bid)"
+          :class="{
+            'bg-green-900': isWinner(bid),
+            'bg-blue-950': !isWinner(bid) && isCurrentUser(bid),
+            'bg-muted/50': !isWinner(bid) && !isCurrentUser(bid)
+          }"
         >
           <div>
             <p class="font-semibold text-foreground">
@@ -74,8 +78,8 @@ function getBidClass(bid: Bid) {
 </template>
 
 <style scoped>
-.bids-list {
-  max-height: 30rem;
+.bids-history {
+  max-height: calc(100vh - 115px);
 }
 
 .list-enter-active,
