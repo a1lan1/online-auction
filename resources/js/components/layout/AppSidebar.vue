@@ -2,6 +2,7 @@
 import NavFooter from '@/components/NavFooter.vue'
 import NavMain from '@/components/NavMain.vue'
 import NavUser from '@/components/NavUser.vue'
+import LotSearch from '@/components/LotSearch.vue'
 import { Sidebar, SidebarContent, SidebarFooter, SidebarHeader, SidebarMenu, SidebarMenuButton, SidebarMenuItem } from '@/components/ui/sidebar'
 import { dashboard } from '@/routes'
 import auctionRoutes from '@/routes/auctions'
@@ -53,6 +54,9 @@ const footerNavItems: NavItem[] = [
     </SidebarHeader>
 
     <SidebarContent>
+      <div class="px-4 mb-4">
+        <LotSearch />
+      </div>
       <NavMain :items="mainNavItems" />
     </SidebarContent>
 

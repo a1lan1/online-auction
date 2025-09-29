@@ -143,9 +143,10 @@ return [
         'host' => env('MEILISEARCH_HOST', 'http://meilisearch:7700'),
         'key' => env('MEILISEARCH_KEY'),
         'index-settings' => [
-            // 'users' => [
-            //     'filterableAttributes'=> ['id', 'name', 'email'],
-            // ],
+            'lots' => [
+                'filterableAttributes' => ['auction_name', 'status', 'starts_at', 'ends_at'],
+                'sortableAttributes' => ['current_price', 'starting_price', 'starts_at', 'ends_at'],
+            ],
         ],
     ],
 

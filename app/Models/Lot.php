@@ -14,6 +14,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Support\Carbon;
+use Laravel\Scout\Searchable;
 
 /**
  * @property int $id
@@ -62,6 +63,7 @@ class Lot extends Model
 {
     /** @use HasFactory<LotFactory> */
     use HasFactory;
+    use Searchable;
 
     protected $fillable = [
         'title',
@@ -75,6 +77,27 @@ class Lot extends Model
         'winner_id',
         'winning_bid_id',
     ];
+
+    public function toSearchableArray(): array
+    {
+        $this->loadMissing('auction');
+
+        return [
+            'id' => $this->id,
+            'title' => $this->title,
+            'description' => $this->description,
+            'auction_name' => $this->auction?->name,
+            'starting_price' => (float) $this->starting_price,
+            'current_price' => (float) $this->current_price,
+            'starts_at' => $this->starts_at->getTimestamp(),
+            'ends_at' => $this->ends_at->getTimestamp(),
+        ];
+    }
+
+    public static function makeAllSearchableUsing(Builder $query): Builder
+    {
+        return $query->with('auction');
+    }
 
     protected function casts(): array
     {

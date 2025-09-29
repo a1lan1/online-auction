@@ -1,10 +1,12 @@
-import type { AuctionState, Bid, BidForm, Lot } from '@/types'
+import type { AuctionState, Bid, BidForm, Lot, LotSearchResult } from '@/types';
 import { defineStore } from 'pinia'
+import { autocomplete } from '@/routes/lots'
 
 export const useAuctionStore = defineStore('auction', {
   state: (): AuctionState => ({
     loading: false,
     storing: false,
+    searching: false,
     lots: [],
     currentLot: null
   }),
@@ -18,8 +20,8 @@ export const useAuctionStore = defineStore('auction', {
       } catch (e: any) {
         this.$toast.add({
           severity: 'error',
-          summary: 'Error fetching lots',
-          detail: e.message || 'An error occurred while fetching lots.',
+          summary: 'Error fetching lot',
+          detail: e.message || 'An error occurred while fetching lot.',
           life: 3000
         })
       } finally {
@@ -56,6 +58,25 @@ export const useAuctionStore = defineStore('auction', {
         })
       } finally {
         this.storing = false
+      }
+    },
+    async searchLotsAutocomplete(query: string) {
+      try {
+        this.searching = true
+        const { data } = await this.$axios.get<LotSearchResult[]>(autocomplete.url(), {
+          params: { query }
+        })
+
+        return data
+      } catch (e: any) {
+        this.$toast.add({
+          severity: 'error',
+          summary: 'Error fetching search results',
+          detail: e.message || 'An unexpected error occurred',
+          life: 3000
+        })
+      } finally {
+        this.searching = false
       }
     },
     setLot(lot: Lot) {

@@ -79,6 +79,14 @@ export interface Bid {
   lot?: Lot;
 }
 
+export interface LotSearchResult {
+    id: number;
+    title: string;
+    current_price: number;
+    status: LotStatus;
+    url: string;
+}
+
 // Forms
 export interface BidForm {
   lot_id: number;
@@ -89,6 +97,7 @@ export interface BidForm {
 export interface AuctionState {
   loading: boolean;
   storing: boolean;
+  searching: boolean;
   lots: Lot[];
   currentLot: Lot | null;
 }

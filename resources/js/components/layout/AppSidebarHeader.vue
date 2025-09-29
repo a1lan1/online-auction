@@ -40,6 +40,12 @@ function openInNewTab(url: string) {
           <Button
             size="small"
             severity="secondary"
+            label="Meilisearch"
+            @click="openInNewTab('http://localhost:7700')"
+          />
+          <Button
+            size="small"
+            severity="secondary"
             label="Grafana"
             @click="openInNewTab('http://localhost:3000/dashboards')"
           />
