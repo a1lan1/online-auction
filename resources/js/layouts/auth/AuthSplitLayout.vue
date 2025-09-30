@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import AppLogoIcon from '@/components/layout/AppLogoIcon.vue'
-import { dashboard } from '@/routes'
+import dashboardRoutes from '@/routes/dashboard'
 import { Link, usePage } from '@inertiajs/vue3'
 
 const page = usePage()
@@ -18,7 +18,7 @@ defineProps<{
     <div class="relative hidden h-full flex-col bg-muted p-10 text-white lg:flex dark:border-r">
       <div class="absolute inset-0 bg-zinc-900" />
       <Link
-        :href="dashboard()"
+        :href="dashboardRoutes.index()"
         class="relative z-20 flex items-center text-lg font-medium"
       >
         <AppLogoIcon />

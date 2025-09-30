@@ -1,37 +1,60 @@
 <script setup lang="ts">
-import AppLayout from '@/layouts/AppLayout.vue'
-import { dashboard } from '@/routes'
-import { type BreadcrumbItem } from '@/types'
 import { Head } from '@inertiajs/vue3'
-import PlaceholderPattern from '../components/PlaceholderPattern.vue'
+import Tabs from 'primevue/tabs'
+import TabList from 'primevue/tablist'
+import Tab from 'primevue/tab'
+import TabPanels from 'primevue/tabpanels'
+import TabPanel from 'primevue/tabpanel'
+import { List, History } from 'lucide-vue-next'
+import AppLayout from '@/layouts/AppLayout.vue'
+import dashboardRoutes from '@/routes/dashboard'
+import MyBidsTable from '@/components/dashboard/MyBidsTable.vue'
+import ActionHistoryTable from '@/components/dashboard/ActionHistoryTable.vue'
+import type { BreadcrumbItem, DashboardBidData, ActionHistoryData, PaginatedResponse } from '@/types/index'
+import { ref } from 'vue'
+
+const props = defineProps<{
+  myBids: PaginatedResponse<DashboardBidData>;
+  actionHistory: PaginatedResponse<ActionHistoryData>;
+}>()
 
 const breadcrumbs: BreadcrumbItem[] = [
   {
     title: 'Dashboard',
-    href: dashboard().url
+    href: dashboardRoutes.index().url
   }
 ]
+
+const activeTab = ref('my-bids')
 </script>
 
 <template>
   <Head title="Dashboard" />
 
   <AppLayout :breadcrumbs="breadcrumbs">
-    <div class="flex h-full flex-1 flex-col gap-4 overflow-x-auto rounded-xl p-4">
-      <div class="grid auto-rows-min gap-4 md:grid-cols-3">
-        <div class="relative aspect-video overflow-hidden rounded-xl border border-sidebar-border/70 dark:border-sidebar-border">
-          <PlaceholderPattern />
-        </div>
-        <div class="relative aspect-video overflow-hidden rounded-xl border border-sidebar-border/70 dark:border-sidebar-border">
-          <PlaceholderPattern />
-        </div>
-        <div class="relative aspect-video overflow-hidden rounded-xl border border-sidebar-border/70 dark:border-sidebar-border">
-          <PlaceholderPattern />
-        </div>
-      </div>
-      <div class="relative min-h-[100vh] flex-1 rounded-xl border border-sidebar-border/70 md:min-h-min dark:border-sidebar-border">
-        <PlaceholderPattern />
-      </div>
+    <div class="p-4">
+      <Tabs :value="activeTab">
+        <TabList>
+          <Tab value="my-bids">
+            <div class="flex items-center gap-2">
+              <List class="size-5" /><span>My Bids</span>
+            </div>
+          </Tab>
+          <Tab value="action-history">
+            <div class="flex items-center gap-2">
+              <History class="size-5" /><span>Action History</span>
+            </div>
+          </Tab>
+        </TabList>
+        <TabPanels>
+          <TabPanel value="my-bids">
+            <MyBidsTable :my-bids="props.myBids" />
+          </TabPanel>
+          <TabPanel value="action-history">
+            <ActionHistoryTable :action-history="props.actionHistory" />
+          </TabPanel>
+        </TabPanels>
+      </Tabs>
     </div>
   </AppLayout>
 </template>

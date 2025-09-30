@@ -4,7 +4,7 @@ import NavMain from '@/components/NavMain.vue'
 import NavUser from '@/components/NavUser.vue'
 import LotSearch from '@/components/LotSearch.vue'
 import { Sidebar, SidebarContent, SidebarFooter, SidebarHeader, SidebarMenu, SidebarMenuButton, SidebarMenuItem } from '@/components/ui/sidebar'
-import { dashboard } from '@/routes'
+import { index as dashboardRoute } from '@/routes/dashboard'
 import auctionRoutes from '@/routes/auctions'
 import { type NavItem } from '@/types'
 import { Link } from '@inertiajs/vue3'
@@ -14,7 +14,7 @@ import AppLogo from './AppLogo.vue'
 const mainNavItems: NavItem[] = [
   {
     title: 'Dashboard',
-    href: dashboard(),
+    href: dashboardRoute(),
     icon: LayoutGrid
   }
 ]

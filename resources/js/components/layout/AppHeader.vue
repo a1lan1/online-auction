@@ -11,7 +11,7 @@ import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/comp
 import UserMenuContent from '@/components/UserMenuContent.vue'
 import { getInitials } from '@/composables/useInitials'
 import { toUrl, urlIsActive } from '@/lib/utils'
-import { dashboard } from '@/routes'
+import dashboardRoutes from '@/routes/dashboard'
 import auctionRoutes from '@/routes/auctions'
 import type { BreadcrumbItem, NavItem } from '@/types'
 import { InertiaLinkProps, Link, usePage } from '@inertiajs/vue3'
@@ -39,7 +39,7 @@ const activeItemStyles = computed(
 const mainNavItems: NavItem[] = [
   {
     title: 'Dashboard',
-    href: dashboard(),
+    href: dashboardRoutes.index(),
     icon: LayoutGrid
   }
 ]
