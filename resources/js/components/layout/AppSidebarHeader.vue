@@ -5,13 +5,13 @@ import { login, register, telescope } from '@/routes'
 import { index as horizon } from '@/routes/horizon'
 import { index as logViewer } from '@/routes/log-viewer'
 import { defaultMethod as prometheus } from '@/routes/prometheus'
-import type { BreadcrumbItemType } from '@/types'
+import type { BreadcrumbItem } from '@/types'
 import { Link } from '@inertiajs/vue3'
 import Button from 'primevue/button'
 
 withDefaults(
   defineProps<{
-    breadcrumbs?: BreadcrumbItemType[];
+    breadcrumbs?: BreadcrumbItem[];
   }>(),
   {
     breadcrumbs: () => []
