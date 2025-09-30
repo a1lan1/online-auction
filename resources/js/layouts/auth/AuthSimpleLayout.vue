@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import AppLogoIcon from '@/components/layout/AppLogoIcon.vue'
-import { dashboard } from '@/routes'
+import dashboardRoutes from '@/routes/dashboard'
 import { Link } from '@inertiajs/vue3'
 
 defineProps<{
@@ -15,7 +15,7 @@ defineProps<{
       <div class="flex flex-col gap-8">
         <div class="flex flex-col items-center gap-4">
           <Link
-            :href="dashboard()"
+            :href="dashboardRoutes.index()"
             class="flex flex-col items-center gap-2 font-medium"
           >
             <div class="mb-1 flex h-9 w-9 items-center justify-center rounded-md">

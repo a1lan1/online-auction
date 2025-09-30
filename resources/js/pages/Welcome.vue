@@ -1,5 +1,6 @@
 <script setup lang="ts">
-import { dashboard, login, register } from '@/routes'
+import { login, register } from '@/routes'
+import dashboardRoutes from '@/routes/dashboard'
 import { Head, Link } from '@inertiajs/vue3'
 import Button from 'primevue/button'
 </script>
@@ -20,7 +21,7 @@ import Button from 'primevue/button'
       <nav class="flex items-center justify-end gap-4">
         <Button
           v-if="$page.props.auth.user"
-          :href="dashboard().url"
+          :href="dashboardRoutes.index()"
           target="_blank"
           label="Dashboard"
           size="small"

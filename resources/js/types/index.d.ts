@@ -7,7 +7,7 @@ export interface Auth {
 
 export interface BreadcrumbItem {
   title: string;
-  href: string;
+  href?: string;
 }
 
 export interface NavItem {
@@ -80,11 +80,43 @@ export interface Bid {
 }
 
 export interface LotSearchResult {
-    id: number;
-    title: string;
-    current_price: number;
-    status: LotStatus;
-    url: string;
+  id: number;
+  title: string;
+  current_price: number;
+  status: LotStatus;
+  url: string;
+}
+
+export interface LotSearchResult {
+  id: number
+  title: string
+  status: string
+  current_price: string
+  url: string
+}
+
+export interface PaginationLinks {
+  first: string;
+  last: string;
+  prev: string | null;
+  next: string | null;
+}
+
+export interface MetaData {
+  current_page: number;
+  from: number;
+  last_page: number;
+  path: string;
+  per_page: number;
+  to: number;
+  total: number;
+  [key: string]: any; // Allow other properties like sort params
+}
+
+export interface PaginatedResponse<T> {
+  data: T[]
+  links: PaginationLinks
+  meta: MetaData
 }
 
 // Forms
@@ -113,4 +145,24 @@ export interface TimeConfigItem {
   prevUnit: PrevTimeUnitKey;
 }
 
-export type BreadcrumbItemType = BreadcrumbItem;
+// Dashboard
+export type UserBidStatus = 'winning' | 'outbid' | 'won' | 'lost'
+
+export interface DashboardBidData {
+  id: number
+  title: string
+  status: string
+  user_bid_status: UserBidStatus
+  current_price: string
+  ends_at: string
+  url: string
+  auction_name: string
+}
+
+export interface ActionHistoryData {
+  id: number
+  amount: string
+  created_at: string
+  lot_title: string
+  lot_url: string
+}
