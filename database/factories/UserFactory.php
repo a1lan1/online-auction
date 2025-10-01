@@ -44,9 +44,9 @@ class UserFactory extends Factory
     }
 
     /**
-     * Configure the model factory.
+     * Indicate that the user should have an avatar.
      */
-    public function configure(): static
+    public function withAvatar(): static
     {
         return $this->afterCreating(function (User $user): void {
             $user->addMediaFromUrl('https://picsum.photos/500')

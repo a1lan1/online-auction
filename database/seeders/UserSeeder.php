@@ -21,7 +21,9 @@ class UserSeeder extends Seeder
         ];
 
         foreach ($usersData as $userData) {
-            User::factory()->create($userData);
+            User::factory()
+                ->withAvatar()
+                ->create($userData);
         }
     }
 }
