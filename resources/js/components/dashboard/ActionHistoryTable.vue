@@ -1,13 +1,13 @@
 <script setup lang="ts">
-import { Link, router } from '@inertiajs/vue3'
-import DataTable, { type DataTablePageEvent, type DataTableSortEvent } from 'primevue/datatable'
-import Column from 'primevue/column'
-import Card from 'primevue/card'
-import Chip from 'primevue/chip'
+import CurrencyTag from '@/components/auction/CurrencyTag.vue'
 import dashboardRoutes from '@/routes/dashboard'
 import type { ActionHistoryData, PaginatedResponse } from '@/types'
-import { Calendar, ArrowUpRight } from 'lucide-vue-next'
-import CurrencyTag from '@/components/auction/CurrencyTag.vue'
+import { Link, router } from '@inertiajs/vue3'
+import { ArrowUpRight, Calendar } from 'lucide-vue-next'
+import Card from 'primevue/card'
+import Chip from 'primevue/chip'
+import Column from 'primevue/column'
+import DataTable, { type DataTablePageEvent, type DataTableSortEvent } from 'primevue/datatable'
 
 const props = defineProps<{
   actionHistory: PaginatedResponse<ActionHistoryData>;
@@ -67,11 +67,11 @@ const onHistorySort = (event: DataTableSortEvent) => {
         >
           <template #body="{ data }">
             <div class="flex items-center gap-2">
-              <ArrowUpRight class="w-4 h-4" />
+              <ArrowUpRight class="h-4 w-4" />
               <Link
                 :href="data.lot_url"
-                class="font-semibold hover:underline truncate"
-                style="max-width: 40ch;"
+                class="truncate font-semibold hover:underline"
+                style="max-width: 40ch"
               >
                 {{ data.lot_title }}
               </Link>
@@ -98,7 +98,7 @@ const onHistorySort = (event: DataTableSortEvent) => {
         >
           <template #body="{ data }">
             <div class="flex items-center gap-2">
-              <Calendar class="w-4 h-4" />
+              <Calendar class="h-4 w-4" />
               <span class="text-sm">{{ data.created_at }}</span>
             </div>
           </template>

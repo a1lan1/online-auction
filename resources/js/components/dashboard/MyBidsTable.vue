@@ -1,12 +1,12 @@
 <script setup lang="ts">
-import { Link, router } from '@inertiajs/vue3'
-import DataTable, { type DataTablePageEvent, type DataTableSortEvent } from 'primevue/datatable'
-import Column from 'primevue/column'
-import Tag from 'primevue/tag'
-import Card from 'primevue/card'
+import CurrencyTag from '@/components/auction/CurrencyTag.vue'
 import dashboardRoutes from '@/routes/dashboard'
 import type { DashboardBidData, PaginatedResponse, UserBidStatus } from '@/types'
-import CurrencyTag from '@/components/auction/CurrencyTag.vue'
+import { Link, router } from '@inertiajs/vue3'
+import Card from 'primevue/card'
+import Column from 'primevue/column'
+import DataTable, { type DataTablePageEvent, type DataTableSortEvent } from 'primevue/datatable'
+import Tag from 'primevue/tag'
 
 const props = defineProps<{
   myBids: PaginatedResponse<DashboardBidData>;

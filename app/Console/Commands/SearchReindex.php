@@ -25,10 +25,10 @@ class SearchReindex extends Command
         ];
 
         foreach ($models as $model) {
-            $this->info("Flushing index for model: {$model}");
+            $this->info('Flushing index for model: '.$model);
             Artisan::call('scout:flush', ['model' => $model]);
 
-            $this->info("Importing data for model: {$model}");
+            $this->info('Importing data for model: '.$model);
             Artisan::call('scout:import', ['model' => $model]);
         }
 

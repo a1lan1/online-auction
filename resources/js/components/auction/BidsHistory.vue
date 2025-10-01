@@ -49,7 +49,7 @@ function isCurrentUser(bid: Bid) {
           :class="{
             'bg-green-900': isWinner(bid),
             'bg-blue-950': !isWinner(bid) && isCurrentUser(bid),
-            'bg-muted/50': !isWinner(bid) && !isCurrentUser(bid)
+            'bg-muted/50': !isWinner(bid) && !isCurrentUser(bid),
           }"
         >
           <div>

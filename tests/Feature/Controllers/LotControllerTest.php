@@ -127,7 +127,7 @@ test('guests can view a lot', function () {
     $this->get(route('lots.show', $lot))
         ->assertOk()
         ->assertInertia(fn (AssertableInertia $page) => $page
-            ->component('auction/ShowLot')
+            ->component('lot/Show')
             ->has('lot', fn (AssertableInertia $page) => $page
                 ->where('id', $lot->id)
                 ->etc()

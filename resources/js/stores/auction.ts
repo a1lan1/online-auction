@@ -1,6 +1,6 @@
-import { defineStore } from 'pinia'
 import { autocomplete } from '@/routes/lots'
 import type { AuctionState, Bid, BidForm, Lot, LotSearchResult } from '@/types'
+import { defineStore } from 'pinia'
 
 export const useAuctionStore = defineStore('auction', {
   state: (): AuctionState => ({

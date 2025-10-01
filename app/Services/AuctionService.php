@@ -13,7 +13,7 @@ class AuctionService implements AuctionServiceInterface
 {
     public function getAuctions(?int $limit = 30): Collection
     {
-        return Cache::remember('auctions', now()->addHours(6), function () use ($limit) {
+        return Cache::remember('auctions', now()->addHours(2), function () use ($limit) {
             return Auction::query()
                 ->with('owner:id,name')
                 ->withCount(['lots' => function (Builder $query) {

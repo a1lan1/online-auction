@@ -1,15 +1,26 @@
 <script setup lang="ts">
+import LotSearch from '@/components/LotSearch.vue'
 import NavFooter from '@/components/NavFooter.vue'
 import NavMain from '@/components/NavMain.vue'
 import NavUser from '@/components/NavUser.vue'
-import LotSearch from '@/components/LotSearch.vue'
-import { Sidebar, SidebarContent, SidebarFooter, SidebarHeader, SidebarMenu, SidebarMenuButton, SidebarMenuItem } from '@/components/ui/sidebar'
-import { index as dashboardRoute } from '@/routes/dashboard'
+import {
+  Sidebar,
+  SidebarContent,
+  SidebarFooter,
+  SidebarHeader,
+  SidebarMenu,
+  SidebarMenuButton,
+  SidebarMenuItem,
+  useSidebar
+} from '@/components/ui/sidebar'
 import auctionRoutes from '@/routes/auctions'
+import { index as dashboardRoute } from '@/routes/dashboard'
 import { type NavItem } from '@/types'
 import { Link } from '@inertiajs/vue3'
 import { BookOpen, Folder, LayoutGrid } from 'lucide-vue-next'
 import AppLogo from './AppLogo.vue'
+
+const { open } = useSidebar()
 
 const mainNavItems: NavItem[] = [
   {
@@ -54,7 +65,10 @@ const footerNavItems: NavItem[] = [
     </SidebarHeader>
 
     <SidebarContent>
-      <div class="px-4 mb-4">
+      <div
+        v-if="open"
+        class="mb-4 px-4"
+      >
         <LotSearch />
       </div>
       <NavMain :items="mainNavItems" />

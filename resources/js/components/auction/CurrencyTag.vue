@@ -1,16 +1,14 @@
 <script setup lang="ts">
-import { computed } from 'vue'
-import Tag from 'primevue/tag'
 import { DollarSign } from 'lucide-vue-next'
+import Tag from 'primevue/tag'
+import { computed } from 'vue'
 
 const props = defineProps<{
   amount: number | string;
 }>()
 
 const amountValue = computed(() => {
-  const n = typeof props.amount === 'number'
-    ? props.amount
-    : Number(props.amount)
+  const n = typeof props.amount === 'number' ? props.amount : Number(props.amount)
 
   if (Number.isNaN(n)) {
     return String(props.amount)
@@ -29,7 +27,7 @@ const amountValue = computed(() => {
     severity="success"
   >
     <template #icon>
-      <DollarSign class="w-4 h-4" />
+      <DollarSign class="h-4 w-4" />
     </template>
   </Tag>
 </template>

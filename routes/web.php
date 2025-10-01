@@ -1,8 +1,8 @@
 <?php
 
 use App\Http\Controllers\AuctionController;
-use App\Http\Controllers\LotController;
 use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\LotController;
 use Illuminate\Support\Facades\Route;
 
 Route::controller(AuctionController::class)

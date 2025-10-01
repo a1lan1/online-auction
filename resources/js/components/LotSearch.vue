@@ -1,14 +1,14 @@
 <script setup lang="ts">
-import { ref } from 'vue'
-import { router } from '@inertiajs/vue3'
-import { storeToRefs } from 'pinia'
-import AutoComplete from 'primevue/autocomplete'
-import { DollarSignIcon } from 'lucide-vue-next'
-import Chip from 'primevue/chip'
+import LotStatusTag from '@/components/auction/LotStatusTag.vue'
 import { useAuctionStore } from '@/stores/auction'
 import type { LotSearchResult } from '@/types'
+import { router } from '@inertiajs/vue3'
+import { DollarSignIcon } from 'lucide-vue-next'
+import { storeToRefs } from 'pinia'
 import type { AutoCompleteCompleteEvent, AutoCompleteOptionSelectEvent } from 'primevue/autocomplete'
-import LotStatusTag from '@/components/auction/LotStatusTag.vue'
+import AutoComplete from 'primevue/autocomplete'
+import Chip from 'primevue/chip'
+import { ref } from 'vue'
 
 const auctionStore = useAuctionStore()
 const { searching } = storeToRefs(auctionStore)
@@ -58,7 +58,7 @@ const onLotSelect = (event: AutoCompleteOptionSelectEvent) => {
     @option-select="onLotSelect"
   >
     <template #option="{ option }">
-      <div class="flex w-full item-width items-center justify-between">
+      <div class="item-width flex w-full items-center justify-between">
         <p class="min-w-0 truncate pr-2 font-semibold text-gray-900 dark:text-gray-100">
           {{ option.title }}
         </p>

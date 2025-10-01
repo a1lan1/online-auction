@@ -20,7 +20,7 @@ class ActionHistoryResource extends JsonResource
             'amount' => $this->amount,
             'created_at' => $this->created_at->diffForHumans(),
             'lot_title' => $this->whenLoaded('lot', fn () => $this->lot->title),
-            'lot_url' => $this->whenLoaded('lot', fn () => route('lots.show', $this->lot->id)),
+            'lot_url' => $this->whenLoaded('lot', fn (): string => route('lots.show', $this->lot->id)),
         ];
     }
 }
