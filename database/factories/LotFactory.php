@@ -32,6 +32,17 @@ class LotFactory extends Factory
     {
         return $this->state(fn (array $attributes): array => [
             'status' => LotStatus::ACTIVE,
+            'starts_at' => now()->subDay(),
+            'ends_at' => now()->addDay(),
+        ]);
+    }
+
+    public function finished(): static
+    {
+        return $this->state(fn (array $attributes): array => [
+            'status' => LotStatus::FINISHED,
+            'starts_at' => now()->subDays(2),
+            'ends_at' => now()->subDay(),
         ]);
     }
 }

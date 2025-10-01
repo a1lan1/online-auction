@@ -19,13 +19,11 @@ test('unauthenticated users cannot place a bid', function () {
     $response->assertRedirect(route('login'));
 });
 
-test('authenticated users cannot place a bid on an inactive auction', function () {
+test('authenticated users cannot place a bid on an inactive lot', function () {
     $user = User::factory()->create();
     $auction = Auction::factory()->create();
-    $lot = Lot::factory()->active()->create([
+    $lot = Lot::factory()->finished()->create([
         'auction_id' => $auction->id,
-        'starts_at' => now()->addDay(),
-        'ends_at' => now()->addDays(2),
     ]);
 
     $response = $this->actingAs($user)->post(route('lots.bids.store', $lot->id), [
@@ -40,8 +38,6 @@ test('it requires a valid amount to place a bid', function (mixed $amount, ?stri
     $auction = Auction::factory()->create();
     $lot = Lot::factory()->active()->create([
         'auction_id' => $auction->id,
-        'starts_at' => now()->subDay(),
-        'ends_at' => now()->addDay(),
         'starting_price' => 1000,
     ]);
 
@@ -61,8 +57,6 @@ test('it successfully places a valid bid', function () {
     $auction = Auction::factory()->create();
     $lot = Lot::factory()->active()->create([
         'auction_id' => $auction->id,
-        'starts_at' => now()->subDay(),
-        'ends_at' => now()->addDay(),
         'starting_price' => 1000,
     ]);
 
@@ -84,8 +78,6 @@ test('it handles errors when placing a bid', function () {
     $auction = Auction::factory()->create();
     $lot = Lot::factory()->active()->create([
         'auction_id' => $auction->id,
-        'starts_at' => now()->subDay(),
-        'ends_at' => now()->addDay(),
         'starting_price' => 1000,
     ]);
 
@@ -107,8 +99,6 @@ test('it is throttled', function () {
     $lot = Lot::factory()->active()->create([
         'auction_id' => $auction->id,
         'starting_price' => 1000,
-        'starts_at' => now()->subDay(),
-        'ends_at' => now()->addDay(),
     ]);
 
     $responses = collect();

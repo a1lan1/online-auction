@@ -17,7 +17,7 @@ class AuctionFactory extends Factory
     public function definition(): array
     {
         return [
-            'user_id' => User::inRandomOrder()->first() ?: User::factory(),
+            'user_id' => User::factory(),
             'name' => fake()->word.' Auction',
         ];
     }

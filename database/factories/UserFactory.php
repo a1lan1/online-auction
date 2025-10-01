@@ -42,4 +42,15 @@ class UserFactory extends Factory
             'email_verified_at' => null,
         ]);
     }
+
+    /**
+     * Configure the model factory.
+     */
+    public function configure(): static
+    {
+        return $this->afterCreating(function (User $user): void {
+            $user->addMediaFromUrl('https://picsum.photos/500')
+                ->toMediaCollection('user.avatar');
+        });
+    }
 }

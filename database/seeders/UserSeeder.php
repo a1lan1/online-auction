@@ -9,7 +9,6 @@ class UserSeeder extends Seeder
 {
     public function run(): void
     {
-        $imgUrl = 'https://picsum.photos/500';
         $usersData = [
             [
                 'name' => 'Test User',
@@ -22,19 +21,7 @@ class UserSeeder extends Seeder
         ];
 
         foreach ($usersData as $userData) {
-            User::factory()
-                ->afterCreating(function (User $user) use ($imgUrl): void {
-                    $user->addMediaFromUrl($imgUrl)
-                        ->toMediaCollection('user.avatar');
-                })
-                ->create($userData);
+            User::factory()->create($userData);
         }
-
-        User::factory(5)
-            ->afterCreating(function (User $user) use ($imgUrl): void {
-                $user->addMediaFromUrl($imgUrl)
-                    ->toMediaCollection('user.avatar');
-            })
-            ->create();
     }
 }
