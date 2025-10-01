@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Contracts\AuctionServiceInterface;
+use App\Http\Resources\AuctionResource;
 use App\Models\Auction;
 use Illuminate\Auth\Access\AuthorizationException;
 use Inertia\Inertia;
@@ -31,8 +32,10 @@ class AuctionController extends Controller
     {
         $this->authorize('view', $auction);
 
+        $auction = $this->auctionService->getAuctionWithLots($auction);
+
         return Inertia::render('auction/Show', [
-            'auction' => $this->auctionService->getAuctionWithLots($auction),
+            'auction' => AuctionResource::make($auction),
         ]);
     }
 }
