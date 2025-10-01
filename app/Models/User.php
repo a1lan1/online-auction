@@ -5,15 +5,23 @@ namespace App\Models;
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Database\Factories\UserFactory;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Foundation\Auth\User as Authenticatable;
+use Illuminate\Http\UploadedFile;
 use Illuminate\Notifications\DatabaseNotification;
 use Illuminate\Notifications\DatabaseNotificationCollection;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Support\Carbon;
 use Laravel\Fortify\TwoFactorAuthenticatable;
+use Spatie\MediaLibrary\HasMedia;
+use Spatie\MediaLibrary\InteractsWithMedia;
+use Spatie\MediaLibrary\MediaCollections\Exceptions\FileDoesNotExist;
+use Spatie\MediaLibrary\MediaCollections\Exceptions\FileIsTooBig;
+use Spatie\MediaLibrary\MediaCollections\Models\Collections\MediaCollection;
+use Spatie\MediaLibrary\MediaCollections\Models\Media;
 
 /**
  * @property int $id
@@ -29,8 +37,11 @@ use Laravel\Fortify\TwoFactorAuthenticatable;
  * @property string|null $two_factor_confirmed_at
  * @property-read Collection<int, Auction> $auctions
  * @property-read int|null $auctions_count
+ * @property-read string $avatar_url
  * @property-read Collection<int, Bid> $bids
  * @property-read int|null $bids_count
+ * @property-read MediaCollection<int, Media> $media
+ * @property-read int|null $media_count
  * @property-read DatabaseNotificationCollection<int, DatabaseNotification> $notifications
  * @property-read int|null $notifications_count
  *
@@ -52,9 +63,10 @@ use Laravel\Fortify\TwoFactorAuthenticatable;
  *
  * @mixin \Eloquent
  */
-class User extends Authenticatable
+class User extends Authenticatable implements HasMedia
 {
     use HasFactory;
+    use InteractsWithMedia;
     use Notifiable;
     use TwoFactorAuthenticatable;
 
@@ -76,6 +88,13 @@ class User extends Authenticatable
     ];
 
     /**
+     * @var list<string>
+     */
+    protected $appends = [
+        'avatar_url',
+    ];
+
+    /**
      * @return array<string, string>
      */
     protected function casts(): array
@@ -94,5 +113,38 @@ class User extends Authenticatable
     public function bids(): HasMany
     {
         return $this->hasMany(Bid::class);
+    }
+
+    public function registerMediaConversions(?Media $media = null): void
+    {
+        $this->addMediaConversion('user.avatar-thumb')
+            ->crop(400, 400);
+    }
+
+    public function registerMediaCollections(): void
+    {
+        $this->addMediaCollection('user.avatar')
+            ->acceptsMimeTypes(['image/jpeg', 'image/png'])
+            ->singleFile();
+    }
+
+    /**
+     * @throws FileDoesNotExist
+     * @throws FileIsTooBig
+     */
+    public function uploadAvatar(UploadedFile $file): void
+    {
+        $this->addMedia($file)
+            ->usingFileName($file->hashName())
+            ->toMediaCollection('user.avatar');
+    }
+
+    protected function avatarUrl(): Attribute
+    {
+        return Attribute::get(function (): string {
+            return $this->hasMedia('user.avatar')
+                ? $this->getFirstMediaUrl('user.avatar')
+                : 'https://www.gravatar.com/avatar/'.md5(strtolower(trim($this->name))).'?s=200&d=identicon';
+        })->shouldCache();
     }
 }

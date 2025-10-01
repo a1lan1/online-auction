@@ -26,12 +26,20 @@ export type AppPageProps<T extends Record<string, unknown> = Record<string, unkn
 
 export type LotStatus = 'pending' | 'active' | 'finished' | 'canceled';
 
+export interface MediaFile {
+  url: string;
+  name: string;
+  size: number;
+  mime_type: string;
+  created_at: string;
+}
+
 // Models
 export interface User {
   id: number;
   name: string;
   email?: string;
-  avatar?: string;
+  avatar_url: string;
   email_verified_at?: string | null;
   created_at?: string;
   updated_at?: string;
@@ -56,6 +64,8 @@ export interface Lot {
   title: string;
   starts_at: string;
   ends_at: string;
+  image_url: string;
+  gallery_files: MediaFile[];
   status: LotStatus;
   description: string | null;
   starting_price: number;
@@ -88,11 +98,11 @@ export interface LotSearchResult {
 }
 
 export interface LotSearchResult {
-  id: number
-  title: string
-  status: string
-  current_price: string
-  url: string
+  id: number;
+  title: string;
+  status: string;
+  current_price: string;
+  url: string;
 }
 
 export interface PaginationLinks {
@@ -114,9 +124,9 @@ export interface MetaData {
 }
 
 export interface PaginatedResponse<T> {
-  data: T[]
-  links: PaginationLinks
-  meta: MetaData
+  data: T[];
+  links: PaginationLinks;
+  meta: MetaData;
 }
 
 // Forms
@@ -146,23 +156,23 @@ export interface TimeConfigItem {
 }
 
 // Dashboard
-export type UserBidStatus = 'winning' | 'outbid' | 'won' | 'lost'
+export type UserBidStatus = 'winning' | 'outbid' | 'won' | 'lost';
 
 export interface DashboardBidData {
-  id: number
-  title: string
-  status: string
-  user_bid_status: UserBidStatus
-  current_price: string
-  ends_at: string
-  url: string
-  auction_name: string
+  id: number;
+  title: string;
+  status: string;
+  user_bid_status: UserBidStatus;
+  current_price: string;
+  ends_at: string;
+  url: string;
+  auction_name: string;
 }
 
 export interface ActionHistoryData {
-  id: number
-  amount: string
-  created_at: string
-  lot_title: string
-  lot_url: string
+  id: number;
+  amount: string;
+  created_at: string;
+  lot_title: string;
+  lot_url: string;
 }

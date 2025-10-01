@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { Avatar, AvatarImage } from '@/components/ui/avatar'
 import AppLayout from '@/layouts/AppLayout.vue'
 import auctionRoutes from '@/routes/auctions'
 import type { Auction, BreadcrumbItem } from '@/types'
@@ -43,9 +44,25 @@ const breadcrumbs: BreadcrumbItem[] = [
             <h2 class="text-xl font-semibold tracking-tight">
               {{ auction.name }}
             </h2>
-            <div class="mt-3 space-y-1 text-sm text-muted-foreground">
-              <p><strong>Owner:</strong> {{ auction.owner.name }}</p>
-              <p><strong>Active Lots:</strong> {{ auction.lots_count }}</p>
+
+            <div class="flex items-center justify-start">
+              <Avatar
+                size="xlarge"
+                class="mr-2 rounded-lg"
+              >
+                <AvatarImage
+                  size="xlarge"
+                  :src="auction.owner.avatar_url"
+                  :alt="auction.owner.name"
+                />
+              </Avatar>
+
+              <div class="text-sm text-muted-foreground">
+                <p>
+                  <strong title="Owner">{{ auction.owner.name }}</strong>
+                </p>
+                <p><strong>Active Lots:</strong> {{ auction.lots_count }}</p>
+              </div>
             </div>
           </div>
         </Link>

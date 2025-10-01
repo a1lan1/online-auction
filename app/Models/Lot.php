@@ -8,13 +8,21 @@ use Database\Factories\LotFactory;
 use Illuminate\Database\Eloquent\Attributes\ObservedBy;
 use Illuminate\Database\Eloquent\Attributes\Scope;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Carbon;
 use Laravel\Scout\Searchable;
+use Spatie\MediaLibrary\HasMedia;
+use Spatie\MediaLibrary\InteractsWithMedia;
+use Spatie\MediaLibrary\MediaCollections\Exceptions\FileDoesNotExist;
+use Spatie\MediaLibrary\MediaCollections\Exceptions\FileIsTooBig;
+use Spatie\MediaLibrary\MediaCollections\Models\Collections\MediaCollection;
+use Spatie\MediaLibrary\MediaCollections\Models\Media;
 
 /**
  * @property int $id
@@ -33,6 +41,10 @@ use Laravel\Scout\Searchable;
  * @property-read Auction $auction
  * @property-read Collection<int, Bid> $bids
  * @property-read int|null $bids_count
+ * @property-read mixed $gallery_files
+ * @property-read string $image_url
+ * @property-read MediaCollection<int, Media> $media
+ * @property-read int|null $media_count
  * @property-read User|null $winner
  * @property-read Bid|null $winnerBid
  *
@@ -59,10 +71,12 @@ use Laravel\Scout\Searchable;
  * @mixin \Eloquent
  */
 #[ObservedBy([LotObserver::class])]
-class Lot extends Model
+class Lot extends Model implements HasMedia
 {
     /** @use HasFactory<LotFactory> */
     use HasFactory;
+
+    use InteractsWithMedia;
     use Searchable;
 
     protected $fillable = [
@@ -78,6 +92,14 @@ class Lot extends Model
         'winning_bid_id',
     ];
 
+    /**
+     * @var list<string>
+     */
+    protected $appends = [
+        'image_url',
+        'gallery_files',
+    ];
+
     public function toSearchableArray(): array
     {
         $this->loadMissing('auction');
@@ -86,7 +108,7 @@ class Lot extends Model
             'id' => $this->id,
             'title' => $this->title,
             'description' => $this->description,
-            'auction_name' => $this->auction?->name,
+            'auction_name' => $this->auction->name,
             'starting_price' => (float) $this->starting_price,
             'current_price' => (float) $this->current_price,
             'starts_at' => $this->starts_at->getTimestamp(),
@@ -128,6 +150,57 @@ class Lot extends Model
     public function winnerBid(): BelongsTo
     {
         return $this->belongsTo(Bid::class, 'winning_bid_id');
+    }
+
+    public function registerMediaConversions(?Media $media = null): void
+    {
+        $this->addMediaConversion('lot.image');
+        $this->addMediaConversion('lot.gallery');
+    }
+
+    /**
+     * @throws FileDoesNotExist
+     * @throws FileIsTooBig
+     */
+    public function uploadImage(UploadedFile $file): void
+    {
+        $this->addMedia($file)
+            ->usingFileName($file->hashName())
+            ->toMediaCollection('lot.image');
+    }
+
+    /**
+     * @throws FileDoesNotExist
+     * @throws FileIsTooBig
+     */
+    public function addGalleryFiles(array $files): void
+    {
+        foreach ($files as $file) {
+            $this->addMedia($file)
+                ->toMediaCollection('lot.gallery');
+        }
+    }
+
+    protected function imageUrl(): Attribute
+    {
+        return Attribute::make(
+            get: fn (): string => $this->getFirstMediaUrl('lot.image')
+        );
+    }
+
+    protected function galleryFiles(): Attribute
+    {
+        return Attribute::make(
+            get: fn () => $this->getMedia('lot.gallery')->map(function ($media): array {
+                return [
+                    'url' => $media->getUrl(),
+                    'name' => $media->file_name,
+                    'size' => $media->size,
+                    'mime_type' => $media->mime_type,
+                    'created_at' => $media->created_at,
+                ];
+            })->toArray()
+        );
     }
 
     public function updateStatus(LotStatus $status): void

@@ -3,6 +3,7 @@ import BidsHistory from '@/components/auction/BidsHistory.vue'
 import CountdownTimer from '@/components/auction/CountdownTimer.vue'
 import LotBidForm from '@/components/auction/LotBidForm.vue'
 import LotDetails from '@/components/auction/LotDetails.vue'
+import LotGallery from '@/components/auction/LotGallery.vue'
 import WinnerDisplay from '@/components/auction/WinnerDisplay.vue'
 import { useCountdown } from '@/composables/useCountdown'
 import useEcho from '@/composables/useEcho'
@@ -60,22 +61,30 @@ onUnmounted(() => {
       v-if="currentLot"
       class="grid h-full flex-1 grid-cols-12 gap-6 overflow-y-auto p-4"
     >
-      <div class="col-span-12 flex flex-col gap-6 lg:col-span-9">
+      <div class="col-span-12 flex h-full flex-col gap-6 lg:col-span-9">
         <CountdownTimer
           v-if="showCountdownTimer"
           :date="currentLot.ends_at"
           type="down"
         />
 
-        <LotDetails :lot="currentLot" />
-        <LotBidForm
-          v-if="currentLot.status === 'active'"
-          :lot="currentLot"
-        />
-        <WinnerDisplay
-          v-else-if="currentLot.status === 'finished'"
-          :lot="currentLot"
-        />
+        <div class="grid grid-cols-6 grid-rows-2 gap-2">
+          <div class="col-span-3">
+            <LotGallery :files="lot.gallery_files" />
+          </div>
+
+          <div class="col-span-3 col-start-4 space-y-2">
+            <LotDetails :lot="currentLot" />
+            <LotBidForm
+              v-if="currentLot.status === 'active'"
+              :lot="currentLot"
+            />
+            <WinnerDisplay
+              v-else-if="currentLot.status === 'finished'"
+              :lot="currentLot"
+            />
+          </div>
+        </div>
       </div>
 
       <div class="col-span-12 lg:col-span-3">

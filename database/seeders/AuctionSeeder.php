@@ -5,7 +5,6 @@ namespace Database\Seeders;
 use App\Enums\LotStatus;
 use App\Models\Auction;
 use App\Models\Lot;
-use App\Models\User;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 
@@ -15,13 +14,25 @@ class AuctionSeeder extends Seeder
 
     public function run(): void
     {
-        $users = User::all();
+        $imgUrl = 'https://picsum.photos/800/600';
 
         Auction::factory(15)
-            ->create(['user_id' => $users->random()->id])
-            ->each(fn (Auction $auction) => Lot::factory(9)->create([
-                'auction_id' => $auction->id,
-                'status' => LotStatus::ACTIVE,
-            ]));
+            ->create()
+            ->each(function (Auction $auction) use ($imgUrl): void {
+                Lot::factory(random_int(3, 6))
+                    ->afterCreating(function (Lot $lot) use ($imgUrl): void {
+                        $lot->addMediaFromUrl($imgUrl)
+                            ->toMediaCollection('lot.image');
+
+                        for ($j = 1; $j <= random_int(3, 6); $j++) {
+                            $lot->addMediaFromUrl($imgUrl)
+                                ->toMediaCollection('lot.gallery');
+                        }
+                    })
+                    ->create([
+                        'auction_id' => $auction->id,
+                        'status' => LotStatus::ACTIVE,
+                    ]);
+            });
     }
 }

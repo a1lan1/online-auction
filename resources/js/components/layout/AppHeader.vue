@@ -11,8 +11,8 @@ import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/comp
 import UserMenuContent from '@/components/UserMenuContent.vue'
 import { getInitials } from '@/composables/useInitials'
 import { toUrl, urlIsActive } from '@/lib/utils'
-import dashboardRoutes from '@/routes/dashboard'
 import auctionRoutes from '@/routes/auctions'
+import dashboardRoutes from '@/routes/dashboard'
 import type { BreadcrumbItem, NavItem } from '@/types'
 import { InertiaLinkProps, Link, usePage } from '@inertiajs/vue3'
 import { BookOpen, Folder, LayoutGrid, Menu, Search } from 'lucide-vue-next'
@@ -214,8 +214,8 @@ const rightNavItems: NavItem[] = [
               >
                 <Avatar class="size-8 overflow-hidden rounded-full">
                   <AvatarImage
-                    v-if="auth.user.avatar"
-                    :src="auth.user.avatar"
+                    v-if="auth.user.avatar_url"
+                    :src="auth.user.avatar_url"
                     :alt="auth.user.name"
                   />
                   <AvatarFallback class="rounded-lg bg-neutral-200 font-semibold text-black dark:bg-neutral-700 dark:text-white">
