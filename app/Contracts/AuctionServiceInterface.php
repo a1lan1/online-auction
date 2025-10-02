@@ -9,5 +9,5 @@ interface AuctionServiceInterface
 {
     public function getAuctions(?int $limit): Collection;
 
-    public function getAuctionWithLots(Auction $auction): Auction;
+    public function getAuction(Auction $auction): Auction;
 }

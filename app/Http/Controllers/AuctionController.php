@@ -3,7 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Contracts\AuctionServiceInterface;
+use App\Contracts\LotServiceInterface;
 use App\Http\Resources\AuctionResource;
+use App\Http\Resources\LotResource;
 use App\Models\Auction;
 use Illuminate\Auth\Access\AuthorizationException;
 use Inertia\Inertia;
@@ -11,7 +13,10 @@ use Inertia\Response;
 
 class AuctionController extends Controller
 {
-    public function __construct(private readonly AuctionServiceInterface $auctionService) {}
+    public function __construct(
+        private readonly AuctionServiceInterface $auctionService,
+        private readonly LotServiceInterface $lotService,
+    ) {}
 
     /**
      * @throws AuthorizationException
@@ -32,10 +37,14 @@ class AuctionController extends Controller
     {
         $this->authorize('view', $auction);
 
-        $auction = $this->auctionService->getAuctionWithLots($auction);
+        $auction = $this->auctionService->getAuction($auction);
+        $lots = $this->lotService->getLots($auction->id);
 
         return Inertia::render('auction/Show', [
             'auction' => AuctionResource::make($auction),
+            'lots' => Inertia::scroll(
+                LotResource::collection($lots)
+            ),
         ]);
     }
 }

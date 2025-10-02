@@ -3,13 +3,14 @@ import LotStatusTag from '@/components/auction/LotStatusTag.vue'
 import { Avatar, AvatarImage } from '@/components/ui/avatar'
 import AppLayout from '@/layouts/AppLayout.vue'
 import auctions from '@/routes/auctions'
-import lots from '@/routes/lots'
-import type { Auction, BreadcrumbItem } from '@/types'
-import { Head, Link } from '@inertiajs/vue3'
+import lotsRoutes from '@/routes/lots'
+import type { Auction, BreadcrumbItem, Lot } from '@/types'
+import { Head, InfiniteScroll, Link } from '@inertiajs/vue3'
 import Card from 'primevue/card'
 
 interface Props {
   auction: Auction;
+  lots: { data: Lot[] };
 }
 
 const props = defineProps<Props>()
@@ -21,7 +22,7 @@ const breadcrumbs: BreadcrumbItem[] = [
   },
   {
     title: props.auction.name,
-    href: lots.show(props.auction.id).url
+    href: lotsRoutes.show(props.auction.id).url
   }
 ]
 </script>
@@ -54,14 +55,15 @@ const breadcrumbs: BreadcrumbItem[] = [
         </h2>
       </div>
 
-      <div
-        v-if="auction.lots && auction.lots.length > 0"
+      <InfiniteScroll
+        v-if="lots.data.length > 0"
+        data="lots"
         class="grid grid-cols-1 gap-4 md:grid-cols-3 lg:grid-cols-4"
       >
         <Link
-          v-for="lot in auction.lots"
+          v-for="lot in lots.data"
           :key="lot.id"
-          :href="lots.show(lot.id).url"
+          :href="lotsRoutes.show(lot.id).url"
         >
           <Card class="transform rounded-xl border text-card-foreground shadow-sm transition-transform hover:scale-[1.02] hover:shadow-md">
             <template #header>
@@ -107,7 +109,7 @@ const breadcrumbs: BreadcrumbItem[] = [
             </template>
           </Card>
         </Link>
-      </div>
+      </InfiniteScroll>
       <div
         v-else
         class="flex h-full min-h-64 flex-1 items-center justify-center rounded-xl border-2 border-dashed"

@@ -25,13 +25,10 @@ class AuctionService implements AuctionServiceInterface
         });
     }
 
-    public function getAuctionWithLots(Auction $auction): Auction
+    public function getAuction(Auction $auction): Auction
     {
         return Cache::remember('auctions.'.$auction->id, now()->addHours(2), function () use ($auction) {
-            return $auction->load([
-                'owner:id,name',
-                'lots' => fn ($query) => $query->active()->finished(),
-            ]);
+            return $auction->load(['owner:id,name']);
         });
     }
 }
