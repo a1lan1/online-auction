@@ -1,0 +1,132 @@
+name: CI
+
+on:
+  push:
+    branches:
+      - develop
+      - main
+  pull_request:
+    branches:
+      - develop
+      - main
+
+jobs:
+  lint:
+    name: Code Style & Linting
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.3'
+          tools: composer:v2
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: 'yarn'
+
+      - name: Install Composer Dependencies
+        uses: ramsey/composer-install@v3
+
+      - name: Install Node Dependencies
+        run: yarn install --frozen-lockfile
+
+      - name: Run PHPStan
+        run: ./vendor/bin/phpstan analyse
+
+      - name: Run Rector
+        run: ./vendor/bin/rector process --dry-run
+
+      - name: Run Pint
+        run: ./vendor/bin/pint --test
+
+      - name: Run ESLint
+        run: yarn lint
+
+      - name: Check Frontend Formatting
+        run: yarn format # Assuming this command checks formatting and exits with an error code on failure
+
+  tests:
+    name: Run Tests
+    needs: lint
+    runs-on: ubuntu-latest
+    services:
+      pgsql:
+        image: postgres:16
+        env:
+          POSTGRES_DB: testing
+          POSTGRES_USER: sail
+          POSTGRES_PASSWORD: password
+        ports:
+          - 5432:5432
+        options: --health-cmd="pg_isready" --health-interval=10s --health-timeout=5s --health-retries=5
+      redis:
+        image: redis:7
+        ports:
+          - 6379:6379
+        options: --entrypoint redis-server
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.3'
+          tools: composer:v2
+          coverage: xdebug
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: 'yarn'
+
+      - name: Cache Composer dependencies
+        uses: actions/cache@v4
+        with:
+          path: ~/.composer/cache/files
+          key: ${{ runner.os }}-composer-${{ hashFiles('**/composer.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-composer-
+
+      - name: Install Composer Dependencies
+        uses: ramsey/composer-install@v3
+
+      - name: Install Node Dependencies
+        run: yarn install --frozen-lockfile
+
+      - name: Copy Environment File
+        run: cp .env.example .env
+
+      - name: Configure Environment for Tests
+        run: |
+          sed -i 's/DB_CONNECTION=pgsql/DB_CONNECTION=pgsql/' .env
+          sed -i 's/DB_HOST=127.0.0.1/DB_HOST=127.0.0.1/' .env
+          sed -i 's/DB_PORT=5432/DB_PORT=${{ job.services.pgsql.ports[5432] }}/' .env
+          sed -i 's/DB_DATABASE=laravel/DB_DATABASE=testing/' .env
+          sed -i 's/DB_USERNAME=sail/DB_USERNAME=sail/' .env
+          sed -i 's/DB_PASSWORD=password/DB_PASSWORD=password/' .env
+          sed -i 's/REDIS_HOST=127.0.0.1/REDIS_HOST=127.0.0.1/' .env
+          sed -i 's/REDIS_PORT=6379/REDIS_PORT=${{ job.services.redis.ports[6379] }}/' .env
+
+      - name: Generate Application Key
+        run: php artisan key:generate
+
+      - name: Build Assets
+        run: yarn build
+
+      - name: Run Migrations
+        run: php artisan migrate --force
+
+      - name: Clear Config Cache for Testing
+        run: php artisan config:clear --env=testing
+
+      - name: Run Tests
+        run: php artisan test --parallel --coverage
