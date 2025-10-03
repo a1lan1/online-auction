@@ -2,6 +2,8 @@
 
 This is a demo web application for online auctions. The development environment is fully containerized using [Docker](https://www.docker.com/products/docker-desktop/) and Laravel Sail.
 
+![](./public/img/auction-demo.gif)
+
 ## Tech Stack
 
 - **High-Performance Backend**: Laravel 12 on **Octane** (with RoadRunner).
@@ -64,6 +66,7 @@ The application is now running and ready for exploration!
 ## Available Services
 
 - **Application**: [http://localhost](http://localhost)
+- **Filament Admin Panel**: [http://localhost/admin](http://localhost/admin)
 - **Horizon Dashboard**: [http://localhost/horizon](http://localhost/horizon)
 - **Meilisearch Dashboard**: [http://localhost:7700](http://localhost:7700)
 - **Mailpit (Email Client)**: [http://localhost:8025](http://localhost:8025)
