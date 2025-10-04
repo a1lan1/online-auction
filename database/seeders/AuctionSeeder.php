@@ -19,7 +19,9 @@ class AuctionSeeder extends Seeder
         Auction::factory(15)
             ->create()
             ->each(function (Auction $auction) use ($imgUrl): void {
-                Lot::factory(random_int(3, 6))
+                $this->command->info('Created auction: '.$auction->name);
+
+                Lot::factory(random_int(8, 16))
                     ->afterCreating(function (Lot $lot) use ($imgUrl): void {
                         $lot->addMediaFromUrl($imgUrl)
                             ->toMediaCollection('lot.image');
@@ -28,6 +30,8 @@ class AuctionSeeder extends Seeder
                             $lot->addMediaFromUrl($imgUrl)
                                 ->toMediaCollection('lot.gallery');
                         }
+
+                        $this->command->info('- Created lot: '.$lot->title);
                     })
                     ->create([
                         'auction_id' => $auction->id,

@@ -1,9 +1,9 @@
 <?php
 
+use App\Events\NewBidPlaced;
 use App\Models\Auction;
 use App\Models\Lot;
 use App\Models\User;
-use App\Events\NewBidPlaced;
 use Illuminate\Support\Facades\Event;
 
 use function Pest\Laravel\actingAs;

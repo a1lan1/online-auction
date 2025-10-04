@@ -18,10 +18,8 @@ This is a demo web application for online auctions. The development environment 
 
 ## Getting Started
 
-1.  **Clone the repository and prepare the environment file.**
+1.  **Prepare the environment file.**
     ```bash
-    git clone <repository-url> online-auction
-    cd online-auction
     cp .env.example .env
     ```
 
@@ -60,8 +58,6 @@ This is a demo web application for online auctions. The development environment 
     ```bash
     sail yarn dev
     ```
-
-The application is now running and ready for exploration!
 
 ## Available Services
 
@@ -105,11 +101,4 @@ sail artisan ide-helper:meta
 
 ```bash
 sail artisan test --coverage --parallel
-```
-
-### Stopping the Environment
-
-To stop all running containers, use:
-```bash
-sail stop
 ```

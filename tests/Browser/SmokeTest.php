@@ -9,5 +9,5 @@ test('smoke', function () {
 
     visit($routes)
         ->assertNoSmoke()
-    ->assertScreenshotMatches();
+        ->assertScreenshotMatches();
 });
