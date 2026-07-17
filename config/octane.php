@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 use App\Listeners\RecordHttpRequestMetrics;
 use Laravel\Octane\Contracts\OperationTerminated;
 use Laravel\Octane\Events\RequestHandled;

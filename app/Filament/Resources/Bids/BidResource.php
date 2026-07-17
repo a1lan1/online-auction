@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Filament\Resources\Bids;
 
 use App\Filament\Resources\Bids\Pages\ListBids;
@@ -47,6 +49,7 @@ class BidResource extends Resource
         ];
     }
 
+    #[Override]
     public static function getPages(): array
     {
         return [
@@ -55,6 +58,7 @@ class BidResource extends Resource
         ];
     }
 
+    #[Override]
     public static function canCreate(): bool
     {
         return false;

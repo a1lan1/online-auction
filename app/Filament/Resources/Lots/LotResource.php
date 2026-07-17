@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Filament\Resources\Lots;
 
 use App\Filament\Resources\Lots\Pages\CreateLot;
@@ -51,6 +53,7 @@ class LotResource extends Resource
         ];
     }
 
+    #[Override]
     public static function getPages(): array
     {
         return [

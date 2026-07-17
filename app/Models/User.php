@@ -16,6 +16,7 @@ use Illuminate\Notifications\DatabaseNotificationCollection;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Support\Carbon;
 use Laravel\Fortify\TwoFactorAuthenticatable;
+use Override;
 use Spatie\MediaLibrary\HasMedia;
 use Spatie\MediaLibrary\InteractsWithMedia;
 use Spatie\MediaLibrary\MediaCollections\Exceptions\FileDoesNotExist;
@@ -97,6 +98,7 @@ class User extends Authenticatable implements HasMedia
     /**
      * @return array<string, string>
      */
+    #[Override]
     protected function casts(): array
     {
         return [

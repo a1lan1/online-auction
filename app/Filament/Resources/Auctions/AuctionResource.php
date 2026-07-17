@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Filament\Resources\Auctions;
 
 use App\Filament\Resources\Auctions\Pages\CreateAuction;
@@ -51,6 +53,7 @@ class AuctionResource extends Resource
         ];
     }
 
+    #[Override]
     public static function getPages(): array
     {
         return [

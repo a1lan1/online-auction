@@ -12,8 +12,8 @@ class DashboardService implements DashboardServiceInterface
     public function getUserBids(User $user, int $page = 1, ?string $sortBy = 'ends_at', ?string $sortOrder = 'desc'): LengthAwarePaginator
     {
         $allowedSorts = ['title', 'current_price', 'ends_at'];
-        $sortBy = in_array($sortBy, $allowedSorts) ? $sortBy : 'ends_at';
-        $sortOrder = in_array($sortOrder, ['asc', 'desc']) ? $sortOrder : 'desc';
+        $sortBy = in_array($sortBy, $allowedSorts, true) ? $sortBy : 'ends_at';
+        $sortOrder = in_array($sortOrder, ['asc', 'desc'], true) ? $sortOrder : 'desc';
 
         $lotIds = $user->bids()
             ->select('lot_id')
@@ -29,8 +29,8 @@ class DashboardService implements DashboardServiceInterface
     public function getUserActionHistory(User $user, int $page = 1, ?string $sortBy = 'created_at', ?string $sortOrder = 'desc'): LengthAwarePaginator
     {
         $allowedSorts = ['amount', 'created_at'];
-        $sortBy = in_array($sortBy, $allowedSorts) ? $sortBy : 'created_at';
-        $sortOrder = in_array($sortOrder, ['asc', 'desc']) ? $sortOrder : 'desc';
+        $sortBy = in_array($sortBy, $allowedSorts, true) ? $sortBy : 'created_at';
+        $sortOrder = in_array($sortOrder, ['asc', 'desc'], true) ? $sortOrder : 'desc';
 
         return $user->bids()
             ->with('lot:id,title')

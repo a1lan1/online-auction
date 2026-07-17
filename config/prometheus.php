@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 use Spatie\Prometheus\Actions\RenderCollectorsAction;
 use Spatie\Prometheus\Http\Middleware\AllowIps;
 

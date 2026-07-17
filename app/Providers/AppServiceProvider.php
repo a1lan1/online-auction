@@ -10,10 +10,10 @@ use App\Services\AuctionService;
 use App\Services\BidService;
 use App\Services\DashboardService;
 use App\Services\LotService;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\Resources\Json\JsonResource;
 use Illuminate\Support\ServiceProvider;
 use Override;
-use Illuminate\Database\Eloquent\Model;
 
 class AppServiceProvider extends ServiceProvider
 {

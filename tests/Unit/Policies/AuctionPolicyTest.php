@@ -5,8 +5,9 @@ namespace Tests\Unit\Policies;
 use App\Models\Auction;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Tests\TestCase;
 
-uses(\Tests\TestCase::class, RefreshDatabase::class);
+uses(TestCase::class, RefreshDatabase::class);
 
 test('owner can update their own auction', function () {
     $owner = User::factory()->create();
