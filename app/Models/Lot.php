@@ -2,8 +2,9 @@
 
 namespace App\Models;
 
-use App\Enums\LotStatus;
 use App\Observers\LotObserver;
+use App\States\Lot\Active;
+use App\States\LotState;
 use Database\Factories\LotFactory;
 use Illuminate\Database\Eloquent\Attributes\ObservedBy;
 use Illuminate\Database\Eloquent\Attributes\Scope;
@@ -17,12 +18,14 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Carbon;
 use Laravel\Scout\Searchable;
+use Override;
 use Spatie\MediaLibrary\HasMedia;
 use Spatie\MediaLibrary\InteractsWithMedia;
 use Spatie\MediaLibrary\MediaCollections\Exceptions\FileDoesNotExist;
 use Spatie\MediaLibrary\MediaCollections\Exceptions\FileIsTooBig;
 use Spatie\MediaLibrary\MediaCollections\Models\Collections\MediaCollection;
 use Spatie\MediaLibrary\MediaCollections\Models\Media;
+use Spatie\ModelStates\HasStates;
 
 /**
  * @property int $id
@@ -30,7 +33,7 @@ use Spatie\MediaLibrary\MediaCollections\Models\Media;
  * @property string|null $description
  * @property numeric $starting_price
  * @property numeric $current_price
- * @property LotStatus $status
+ * @property LotState $status
  * @property int $auction_id
  * @property Carbon $starts_at
  * @property Carbon $ends_at
@@ -53,6 +56,8 @@ use Spatie\MediaLibrary\MediaCollections\Models\Media;
  * @method static Builder<static>|Lot finished()
  * @method static Builder<static>|Lot newModelQuery()
  * @method static Builder<static>|Lot newQuery()
+ * @method static Builder<static>|Lot orWhereNotState(string $column, $states)
+ * @method static Builder<static>|Lot orWhereState(string $column, $states)
  * @method static Builder<static>|Lot query()
  * @method static Builder<static>|Lot whereAuctionId($value)
  * @method static Builder<static>|Lot whereCreatedAt($value)
@@ -60,8 +65,10 @@ use Spatie\MediaLibrary\MediaCollections\Models\Media;
  * @method static Builder<static>|Lot whereDescription($value)
  * @method static Builder<static>|Lot whereEndsAt($value)
  * @method static Builder<static>|Lot whereId($value)
+ * @method static Builder<static>|Lot whereNotState(string $column, $states)
  * @method static Builder<static>|Lot whereStartingPrice($value)
  * @method static Builder<static>|Lot whereStartsAt($value)
+ * @method static Builder<static>|Lot whereState(string $column, $states)
  * @method static Builder<static>|Lot whereStatus($value)
  * @method static Builder<static>|Lot whereTitle($value)
  * @method static Builder<static>|Lot whereUpdatedAt($value)
@@ -76,6 +83,7 @@ class Lot extends Model implements HasMedia
     /** @use HasFactory<LotFactory> */
     use HasFactory;
 
+    use HasStates;
     use InteractsWithMedia;
     use Searchable;
 
@@ -121,12 +129,13 @@ class Lot extends Model implements HasMedia
         return $query->with('auction');
     }
 
+    #[Override]
     protected function casts(): array
     {
         return [
             'starts_at' => 'datetime',
             'ends_at' => 'datetime',
-            'status' => LotStatus::class,
+            'status' => LotState::class,
             'starting_price' => 'decimal:2',
             'current_price' => 'decimal:2',
         ];
@@ -199,19 +208,14 @@ class Lot extends Model implements HasMedia
                     'mime_type' => $media->mime_type,
                     'created_at' => $media->created_at,
                 ];
-            })->toArray()
+            })->all()
         );
-    }
-
-    public function updateStatus(LotStatus $status): void
-    {
-        $this->update(['status' => $status->value]);
     }
 
     #[Scope]
     protected function active(Builder $query): void
     {
-        $query->where('status', LotStatus::ACTIVE)
+        $query->whereState('status', Active::class)
             ->where('starts_at', '<=', now())
             ->where('ends_at', '>=', now());
     }
@@ -219,6 +223,6 @@ class Lot extends Model implements HasMedia
     #[Scope]
     protected function finished(Builder $query): void
     {
-        $query->orWhere('status', LotStatus::FINISHED);
+        $query->where('ends_at', '<', now());
     }
 }
