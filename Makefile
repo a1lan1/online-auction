@@ -1,35 +1,57 @@
+.PHONY: start install dbs restart rebuild wfg clear test lint ide up down
+
+SAIL := ./vendor/bin/sail
+
+start-app:
+	make install
+	make dbs
+	$(SAIL) yarn dev
+
+install:
+	composer install
+	$(SAIL) build
+	$(SAIL) up -d
+	$(SAIL) artisan key:generate
+	$(SAIL) yarn install
+
+up:
+	$(SAIL) up -d
+
+down:
+	$(SAIL) down
+
 dbs:
-	php artisan app:cleanup
-	php artisan horizon:forget --all
-	php artisan migrate:fresh --seed
-	php artisan search:reindex
-	make cc
+	$(SAIL) artisan app:cleanup
+	$(SAIL) artisan horizon:forget --all
+	$(SAIL) artisan migrate:fresh --seed
+	$(SAIL) artisan search:reindex
+	make clear
 
 restart:
-	./vendor/bin/sail down
-	./vendor/bin/sail up
+	$(SAIL) down
+	$(SAIL) up -d
 
 rebuild:
-	./vendor/bin/sail down -v
-	./vendor/bin/sail build --no-cache
-	./vendor/bin/sail up -d
+	$(SAIL) down -v
+	$(SAIL) build --no-cache
+	$(SAIL) up -d
 
 wfg:
-	php artisan wayfinder:generate
+	$(SAIL) artisan wayfinder:generate
 
 clear:
-	php artisan config:clear
-	php artisan cache:clear
-	php artisan route:clear
-	php artisan optimize:clear
+	$(SAIL) artisan config:clear
+	$(SAIL) artisan cache:clear
+	$(SAIL) artisan route:clear
+	$(SAIL) artisan optimize:clear
 
 test:
 	rm -rf coverage coverage.xml public/build
-	yarn build
-	php artisan config:clear --env=testing
-# 	php artisan test --parallel --group=browser
-# 	php artisan test tests/Feature/Filament --parallel
-	php artisan test --coverage --parallel
+	$(SAIL) yarn
+	$(SAIL) yarn build
+	$(SAIL) npx playwright install
+	$(SAIL) artisan config:clear --env=testing
+	$(SAIL) artisan test --coverage --parallel
 
 lint:
 	make ide
@@ -40,6 +62,6 @@ lint:
 	yarn lint
 
 ide:
-	php artisan ide-helper:generate
-	php artisan ide-helper:models -RW
-	php artisan ide-helper:meta
+	$(SAIL) artisan ide-helper:generate
+	$(SAIL) artisan ide-helper:models -RW
+	$(SAIL) artisan ide-helper:meta
