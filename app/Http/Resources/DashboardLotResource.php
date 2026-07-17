@@ -1,10 +1,13 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Http\Resources;
 
-use App\Enums\LotStatus;
 use App\Models\Lot;
 use App\Models\User;
+use App\States\Lot\NotSold;
+use App\States\Lot\Sold;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 use Override;
@@ -21,7 +24,7 @@ class DashboardLotResource extends JsonResource
         $user = $request->user();
         $userBidStatus = 'outbid';
 
-        if ($this->status === LotStatus::FINISHED) {
+        if ($this->status->equals(Sold::class, NotSold::class)) {
             $userBidStatus = $this->winner_id === $user->id ? 'won' : 'lost';
         } elseif ($this->bids->isNotEmpty()) {
             $highestBid = $this->bids->sortByDesc('amount')->first();

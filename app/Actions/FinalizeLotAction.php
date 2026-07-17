@@ -1,12 +1,15 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Actions;
 
 use App\Contracts\BidServiceInterface;
-use App\Enums\LotStatus;
 use App\Events\LotFinished;
 use App\Models\Bid;
 use App\Models\Lot;
+use App\States\Lot\NotSold;
+use App\States\Lot\Sold;
 use Illuminate\Support\Facades\DB;
 use Throwable;
 
@@ -24,7 +27,7 @@ class FinalizeLotAction
             /** @var Bid|null $winningBid */
             $winningBid = $lot->bids()
                 ->orderByDesc('amount')
-                ->orderBy('created_at')
+                ->oldest()
                 ->first();
 
             if ($winningBid) {
@@ -32,11 +35,13 @@ class FinalizeLotAction
                     'winner_id' => $winningBid->user_id,
                     'winning_bid_id' => $winningBid->id,
                 ]);
+
+                $lot->status->transitionTo(Sold::class);
+            } else {
+                $lot->status->transitionTo(NotSold::class);
             }
 
-            $lot->updateStatus(LotStatus::FINISHED);
-
-            LotFinished::dispatch($lot);
+            event(new LotFinished($lot));
         });
     }
 }

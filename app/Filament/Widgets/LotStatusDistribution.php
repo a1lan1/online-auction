@@ -2,8 +2,12 @@
 
 namespace App\Filament\Widgets;
 
-use App\Enums\LotStatus;
 use App\Models\Lot;
+use App\States\Lot\Active;
+use App\States\Lot\Cancelled;
+use App\States\Lot\NotSold;
+use App\States\Lot\Pending;
+use App\States\Lot\Sold;
 use Filament\Widgets\ChartWidget;
 use Illuminate\Support\Facades\DB;
 use Override;
@@ -15,7 +19,6 @@ class LotStatusDistribution extends ChartWidget
     #[Override]
     protected function getData(): array
     {
-        $allStatuses = LotStatus::cases();
         $statusCounts = Lot::query()
             ->select('status', DB::raw('count(*) as count'))
             ->groupBy('status')
@@ -26,16 +29,25 @@ class LotStatusDistribution extends ChartWidget
         $colors = [];
 
         $colorMap = [
-            LotStatus::PENDING->value => '#FFED85',
-            LotStatus::ACTIVE->value => '#36A2EB',
-            LotStatus::FINISHED->value => '#4CAF50',
-            LotStatus::CANCELED->value => '#FF6384',
+            'pending' => '#FFED85',
+            'active' => '#36A2EB',
+            'sold' => '#4CAF50',
+            'not_sold' => '#FF9800',
+            'cancelled' => '#FF6384',
         ];
 
-        foreach ($allStatuses as $status) {
-            $data[] = $statusCounts->get($status->value, 0);
-            $labels[] = $status->name;
-            $colors[] = $colorMap[$status->value];
+        $states = [
+            Pending::$name,
+            Active::$name,
+            Sold::$name,
+            NotSold::$name,
+            Cancelled::$name,
+        ];
+
+        foreach ($states as $status) {
+            $data[] = $statusCounts->get($status, 0);
+            $labels[] = ucfirst(str_replace('_', ' ', $status));
+            $colors[] = $colorMap[$status];
         }
 
         return [

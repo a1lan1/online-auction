@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Http\Resources;
 
 use App\Models\Lot;
@@ -22,7 +24,7 @@ class LotAutocompleteResource extends JsonResource
             'id' => $this->id,
             'title' => $this->title,
             'current_price' => $this->current_price,
-            'status' => $this->status->value,
+            'status' => $this->status,
             'url' => route('lots.show', $this->id),
         ];
     }

@@ -4,6 +4,7 @@ namespace App\Services;
 
 use App\Contracts\LotServiceInterface;
 use App\Models\Lot;
+use App\States\Lot\Active;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Facades\Cache;
@@ -29,11 +30,13 @@ class LotService implements LotServiceInterface
     public function getLots(int $auctionId): LengthAwarePaginator
     {
         return Lot::where('auction_id', $auctionId)
-            ->active()
-            ->finished()
+            ->where(function ($query): void {
+                $query->whereState('status', Active::class)
+                    ->orWhere('ends_at', '<', now());
+            })
             ->withCount('bids')
             ->with('winner:id,name')
-            ->orderBy('status')
+            ->orderBy('ends_at', 'desc')
             ->orderByDesc('created_at')
             ->paginate(self::LOTS_PAGINATE);
     }

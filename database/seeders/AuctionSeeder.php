@@ -2,9 +2,9 @@
 
 namespace Database\Seeders;
 
-use App\Enums\LotStatus;
 use App\Models\Auction;
 use App\Models\Lot;
+use App\States\Lot\Active;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 
@@ -35,7 +35,7 @@ class AuctionSeeder extends Seeder
                     })
                     ->create([
                         'auction_id' => $auction->id,
-                        'status' => LotStatus::ACTIVE,
+                        'status' => Active::class,
                     ]);
             });
     }

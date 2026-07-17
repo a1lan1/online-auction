@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Actions;
 
 use App\Contracts\BidServiceInterface;
@@ -23,9 +25,9 @@ class PlaceBidAction
 
             $bid->load(['user', 'lot']);
 
-            NewBidPlaced::dispatch($bid);
+            event(new NewBidPlaced($bid));
         } catch (Throwable $throwable) {
-            RejectBidPlaced::dispatch($data);
+            event(new RejectBidPlaced($data));
 
             throw $throwable;
         }
