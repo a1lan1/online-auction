@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Enums;
 
 use App\Traits\EnumToArray;
@@ -10,6 +12,7 @@ enum LotStatus: string
 
     case PENDING = 'pending';
     case ACTIVE = 'active';
-    case FINISHED = 'finished';
-    case CANCELED = 'canceled';
+    case SOLD = 'sold';
+    case NOT_SOLD = 'not_sold';
+    case CANCELLED = 'cancelled';
 }
