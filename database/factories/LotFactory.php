@@ -5,7 +5,9 @@ namespace Database\Factories;
 use App\Models\Auction;
 use App\Models\Lot;
 use App\States\Lot\Active;
+use App\States\Lot\Cancelled;
 use App\States\Lot\NotSold;
+use App\States\Lot\Pending;
 use App\States\Lot\Sold;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
@@ -27,6 +29,13 @@ class LotFactory extends Factory
             'ends_at' => fake()->dateTimeBetween('-2 days', '+5 days'),
             'starting_price' => fake()->randomFloat(2, 100, 1000),
         ];
+    }
+
+    public function pending(): static
+    {
+        return $this->state(fn (array $attributes): array => [
+            'status' => Pending::class,
+        ]);
     }
 
     public function active(): static
@@ -51,6 +60,29 @@ class LotFactory extends Factory
     {
         return $this->state(fn (array $attributes): array => [
             'status' => NotSold::class,
+            'starts_at' => now()->subDays(2),
+            'ends_at' => now()->subDay(),
+        ]);
+    }
+
+    public function cancelled(): static
+    {
+        return $this->state(fn (array $attributes): array => [
+            'status' => Cancelled::class,
+        ]);
+    }
+
+    public function hasNotStarted(): static
+    {
+        return $this->state(fn (array $attributes): array => [
+            'starts_at' => now()->addDay(),
+            'ends_at' => now()->addDays(2),
+        ]);
+    }
+
+    public function hasFinished(): static
+    {
+        return $this->state(fn (array $attributes): array => [
             'starts_at' => now()->subDays(2),
             'ends_at' => now()->subDay(),
         ]);

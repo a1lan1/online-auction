@@ -19,7 +19,7 @@ beforeEach(function () {
 });
 
 it('can load the lot list page', function () {
-    $lots = Lot::factory()->count(3)->create();
+    $lots = Lot::factory()->count(3)->pending()->create();
 
     livewire(ListLots::class)
         ->assertOk()
@@ -27,7 +27,7 @@ it('can load the lot list page', function () {
 });
 
 it('can search lots by title', function () {
-    $lots = Lot::factory()->count(3)->create();
+    $lots = Lot::factory()->count(3)->pending()->create();
     $firstLot = $lots->first();
 
     livewire(ListLots::class)
@@ -41,7 +41,7 @@ it('can load the lot create page', function () {
 
 it('can create a lot', function () {
     Auction::factory()->create();
-    Lot::factory()->make();
+    Lot::factory()->pending()->make();
 
     livewire(CreateLot::class)->assertOk();
 });
@@ -65,7 +65,7 @@ it('validates required fields', function () {
 });
 
 it('can load the lot edit page', function () {
-    $lot = Lot::factory()->create();
+    $lot = Lot::factory()->pending()->create();
 
     livewire(EditLot::class, [
         'record' => $lot->id,
@@ -74,9 +74,9 @@ it('can load the lot edit page', function () {
 });
 
 it('can update a lot', function () {
-    $lot = Lot::factory()->create();
+    $lot = Lot::factory()->pending()->create();
     Auction::factory()->create();
-    Lot::factory()->make();
+    Lot::factory()->pending()->make();
 
     livewire(EditLot::class, [
         'record' => $lot->id,
@@ -85,7 +85,7 @@ it('can update a lot', function () {
 });
 
 it('can load the lot view page', function () {
-    $lot = Lot::factory()->create();
+    $lot = Lot::factory()->pending()->create();
 
     livewire(ViewLot::class, [
         'record' => $lot->id,

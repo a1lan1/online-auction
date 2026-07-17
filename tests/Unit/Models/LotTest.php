@@ -2,45 +2,51 @@
 
 namespace Tests\Unit\Models;
 
-use App\Enums\LotStatus;
 use App\Models\Lot;
+use App\States\Lot\Active;
+use App\States\Lot\Pending;
+use App\States\Lot\Sold;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Spatie\ModelStates\Exceptions\CouldNotPerformTransition;
+use Spatie\ModelStates\Exceptions\TransitionNotFound;
+use Tests\TestCase;
 
-uses(\Tests\TestCase::class, RefreshDatabase::class);
+uses(TestCase::class, RefreshDatabase::class);
+
+it('has a pending status by default', function () {
+    $lot = Lot::factory()->create();
+
+    expect($lot->status)->toBeInstanceOf(Pending::class);
+});
+
+it(/**
+ * @throws CouldNotPerformTransition
+ */ 'can transition from pending to active', function () {
+    $lot = Lot::factory()->pending()->create();
+
+    $lot->status->transitionTo(Active::class);
+
+    expect($lot->status)->toBeInstanceOf(Active::class);
+});
+
+it('cannot transition from pending to sold', function () {
+    $lot = Lot::factory()->pending()->create();
+
+    $this->expectException(TransitionNotFound::class);
+
+    $lot->status->transitionTo(Sold::class);
+});
 
 it('correctly scopes to active lots', function () {
-    // 1. Arrange: Create lots with various states.
+    $activeLot = Lot::factory()->active()->create();
+    $pendingLot = Lot::factory()->pending()->create();
+    $soldLot = Lot::factory()->sold()->create();
+    $cancelledLot = Lot::factory()->cancelled()->create();
+    $notStartedLot = Lot::factory()->active()->hasNotStarted()->create();
+    $finishedLot = Lot::factory()->active()->hasFinished()->create();
 
-    // This lot should be returned by the scope.
-    $activeLot = Lot::factory()->create([
-        'status' => LotStatus::ACTIVE,
-        'starts_at' => now()->subDay(),
-        'ends_at' => now()->addDay(),
-    ]);
-
-    // These lots should be ignored by the scope.
-    Lot::factory()->create([
-        'status' => LotStatus::ACTIVE,
-        'starts_at' => now()->addDay(), // Not started yet
-        'ends_at' => now()->addDays(2),
-    ]);
-
-    Lot::factory()->create([
-        'status' => LotStatus::ACTIVE,
-        'starts_at' => now()->subDays(2),
-        'ends_at' => now()->subDay(), // Already finished
-    ]);
-
-    Lot::factory()->create([
-        'status' => LotStatus::CANCELED, // Wrong status
-        'starts_at' => now()->subDay(),
-        'ends_at' => now()->addDay(),
-    ]);
-
-    // 2. Act: Apply the active scope.
     $activeLots = Lot::active()->get();
 
-    // 3. Assert: Check that only the truly active lot was returned.
     expect($activeLots)->toHaveCount(1)
         ->and($activeLots->first()->id)->toBe($activeLot->id);
 });

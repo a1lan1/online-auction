@@ -18,7 +18,8 @@ beforeEach(function () {
 });
 
 it('can load the bid list page', function () {
-    $bids = Bid::factory()->count(3)->create();
+    $lot = Lot::factory()->pending()->create();
+    $bids = Bid::factory()->for($lot)->count(3)->create();
 
     livewire(ListBids::class)
         ->assertOk()
@@ -26,7 +27,7 @@ it('can load the bid list page', function () {
 });
 
 it('can search bids by lot title', function () {
-    $lot = Lot::factory()->create(['title' => 'Test Lot']);
+    $lot = Lot::factory()->pending()->create(['title' => 'Test Lot']);
     $bid = Bid::factory()->for($lot)->create();
     Bid::factory()->count(2)->create();
 
@@ -37,7 +38,8 @@ it('can search bids by lot title', function () {
 
 it('can search bids by user name', function () {
     $user = User::factory()->create(['name' => 'John Doe']);
-    $bid = Bid::factory()->for($user)->create();
+    $lot = Lot::factory()->pending()->create();
+    $bid = Bid::factory()->for($lot)->for($user)->create();
     Bid::factory()->count(2)->create();
 
     livewire(ListBids::class)
@@ -46,7 +48,8 @@ it('can search bids by user name', function () {
 });
 
 it('can load the bid view page', function () {
-    $bid = Bid::factory()->create();
+    $lot = Lot::factory()->pending()->create();
+    $bid = Bid::factory()->for($lot)->create();
 
     livewire(ViewBid::class, [
         'record' => $bid->id,
@@ -55,7 +58,8 @@ it('can load the bid view page', function () {
 });
 
 it('can see bid details in view page', function () {
-    $bid = Bid::factory()->create();
+    $lot = Lot::factory()->pending()->create();
+    $bid = Bid::factory()->for($lot)->create();
 
     livewire(ViewBid::class, [
         'record' => $bid->id,

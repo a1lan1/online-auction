@@ -22,20 +22,22 @@ beforeEach(function () {
 
 it('can load stats overview widget', function () {
     User::factory()->count(5)->create();
-    Lot::factory()->count(3)->create();
-    Bid::factory()->count(7)->create();
+    Lot::factory()->count(3)->pending()->create();
+    $lot = Lot::factory()->pending()->create();
+    Bid::factory()->for($lot)->count(7)->create();
 
     livewire(StatsOverview::class)->assertOk();
 });
 
 it('can load daily bidding activity widget', function () {
-    Bid::factory()->count(5)->create();
+    $lot = Lot::factory()->pending()->create();
+    Bid::factory()->for($lot)->count(5)->create();
 
     livewire(DailyBiddingActivity::class)->assertOk();
 });
 
 it('can load lot status distribution widget', function () {
-    Lot::factory()->count(5)->create();
+    Lot::factory()->count(5)->pending()->create();
 
     livewire(LotStatusDistribution::class)->assertOk();
 });

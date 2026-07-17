@@ -22,7 +22,7 @@ test('unauthenticated users cannot place a bid', function () {
 test('authenticated users cannot place a bid on an inactive lot', function () {
     $user = User::factory()->create();
     $auction = Auction::factory()->create();
-    $lot = Lot::factory()->finished()->create([
+    $lot = Lot::factory()->sold()->create([
         'auction_id' => $auction->id,
     ]);
 
@@ -83,7 +83,7 @@ test('it handles errors when placing a bid', function () {
 
     $this->mock(PlaceBidAction::class)
         ->shouldReceive('execute')
-        ->andThrow(new \Exception('Your bid is too low.'));
+        ->andThrow(new Exception('Your bid is too low.'));
 
     $response = $this->actingAs($user)->post(route('lots.bids.store', $lot->id), [
         'amount' => 1100, // Valid amount, but action will fail

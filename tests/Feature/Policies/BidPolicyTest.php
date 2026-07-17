@@ -2,7 +2,6 @@
 
 namespace Tests\Feature\Policies;
 
-use App\Enums\LotStatus;
 use App\Models\Auction;
 use App\Models\Lot;
 use App\Models\User;
@@ -15,10 +14,7 @@ uses(RefreshDatabase::class);
 
 test('guest cannot place a bid', function () {
     // 1. Arrange: Create an active lot.
-    $lot = Lot::factory()->create([
-        'starts_at' => now()->subDay(),
-        'ends_at' => now()->addDay(),
-    ]);
+    $lot = Lot::factory()->active()->create();
 
     // 2. Act: Make a POST request as a guest.
     $response = post(route('lots.bids.store', $lot), [
@@ -33,7 +29,7 @@ test('lot owner cannot place a bid on their own lot', function () {
     // 1. Arrange: Create a user who owns a lot.
     $owner = User::factory()->create();
     $auction = Auction::factory()->for($owner, 'owner')->create();
-    $lot = Lot::factory()->for($auction)->create();
+    $lot = Lot::factory()->for($auction)->active()->create();
 
     // 2. Act: Make a POST request as the owner.
     $response = actingAs($owner)->post(route('lots.bids.store', $lot), [
@@ -49,11 +45,7 @@ test('user can place a bid on an active lot', function () {
     $bidder = User::factory()->create();
     $owner = User::factory()->create();
     $auction = Auction::factory()->for($owner, 'owner')->create();
-    $lot = Lot::factory()->active()->for($auction)->create([
-        'starts_at' => now()->subDay(),
-        'ends_at' => now()->addDay(),
-        'starting_price' => 1000,
-    ]);
+    $lot = Lot::factory()->for($auction)->active()->create(['starting_price' => 1000]);
 
     // 2. Act: The bidder places a valid bid.
     $response = actingAs($bidder)->post(route('lots.bids.store', $lot), [
@@ -69,10 +61,9 @@ test('user can place a bid on an active lot', function () {
     ]);
 });
 
-test('user cannot place a bid on an inactive lot', function (callable $lotState) {
+test('user cannot place a bid on an inactive lot', function (Lot $lot) {
     // 1. Arrange: Create a bidder and an inactive lot using the data provider.
     $bidder = User::factory()->create();
-    $lot = Lot::factory()->create($lotState());
 
     // 2. Act: The bidder attempts to place a bid.
     $response = actingAs($bidder)->post(route('lots.bids.store', $lot), [
@@ -82,7 +73,9 @@ test('user cannot place a bid on an inactive lot', function (callable $lotState)
     // 3. Assert: Ensure the action is forbidden.
     $response->assertForbidden();
 })->with([
-    'lot has not started' => [fn () => ['starts_at' => now()->addDay(), 'ends_at' => now()->addDays(2)]],
-    'lot has finished' => [fn () => ['starts_at' => now()->subDays(2), 'ends_at' => now()->subDay()]],
-    'lot is canceled' => [fn () => ['status' => LotStatus::CANCELED]],
+    'lot has not started' => fn () => Lot::factory()->active()->hasNotStarted()->create(),
+    'lot has finished' => fn () => Lot::factory()->active()->hasFinished()->create(),
+    'lot is pending' => fn () => Lot::factory()->pending()->create(),
+    'lot is sold' => fn () => Lot::factory()->sold()->create(),
+    'lot is not sold' => fn () => Lot::factory()->notSold()->create(),
 ]);

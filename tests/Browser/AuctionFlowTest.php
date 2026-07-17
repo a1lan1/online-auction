@@ -27,7 +27,7 @@ it('displays lots within an auction and allows navigation to a lot', function ()
     $user = User::factory()->create();
     $auction = Auction::factory()->create();
     $activeLot = Lot::factory()->active()->for($auction)->create();
-    $finishedLot = Lot::factory()->finished()->for($auction)->create();
+    $finishedLot = Lot::factory()->hasFinished()->for($auction)->create();
 
     actingAs($user);
 
@@ -67,7 +67,7 @@ it('allows a user to place a bid on an active lot', function () {
 
 it('does not allow a user to bid on a finished lot', function () {
     $user = User::factory()->create();
-    $lot = Lot::factory()->finished()->create();
+    $lot = Lot::factory()->hasFinished()->create();
 
     actingAs($user);
 
