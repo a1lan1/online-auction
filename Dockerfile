@@ -1,6 +1,6 @@
 # --- STAGE 1: PHP Base ---
 # Here we prepare the base with PHP and all the necessary extensions.
-FROM php:8.3-fpm-alpine AS base
+FROM php:8.4-fpm-alpine AS base
 
 LABEL maintainer="<demo@example.com>"
 
